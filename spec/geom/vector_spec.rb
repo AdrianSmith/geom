@@ -89,7 +89,11 @@ module Geom
     end
 
     it "should determine if same direction with another vector" do
-      pending("not implemented")
+      v1 = Vector.new(1, 0, 0)
+      v2 = Vector.new(1, 1, 0)
+      v3 = Vector.new(-1, 0.001, 0)
+      v1.same_direction(v2).should be_true
+      v1.same_direction(v3).should be_false
     end
 
     it "should determine if parallel with another vector" do
