@@ -52,7 +52,7 @@ module Geom
         v1 = Vector.new(3, -2, 1)
         v2 = Vector.new(0, 2, 4)
         v1.dot(v2).should == 0.0
-        end
+      end
 
       it "should calculate cross product" do
         v1 = Vector.new(1, 0, 0)
@@ -70,17 +70,22 @@ module Geom
     end
 
     it "should calculate angle to another vector" do
-      pending("not implemented")
-    end
+      v1 = Vector.new(2, 0, 0)
+      v2 = Vector.new(0, -3, 0)
+      v1.angle_between(v2).should == Math::PI / 2
 
-    it "should rotate around another vector an angle" do
-      v1 = Vector.new(3.2, 0, 0)
-      v2 = Vector.new(0, 0, -1)
-      r1 = v1.rotate(v2, (33 * Math::PI / 180))
+      v4 = Vector.new(2, 0, 0)
+      v5 = Vector.new(0, 3, 0)
+      v4.angle_between(v5).should == Math::PI / 2
 
-      r1.x.should be_within(0.001).of(2.684)
-      r1.y.should be_within(0.001).of(-1.743)
-      r1.z.should be_within(0.001).of(0.0)
+      v7 = Vector.new(2, 0, 0)
+      v8 = Vector.new(-2, -2, 0)
+      v7.angle_between(v8).should == Math::PI * (3 / 4.0)
+
+
+      v14 = Vector.new(0, 1, 0)
+      v15 = Vector.new(0, -1, 0)
+      v14.angle_between(v15).should == Math::PI
     end
 
     it "should determine if same direction with another vector" do
