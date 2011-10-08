@@ -135,6 +135,29 @@ module Geom
     end
 
     describe "Projection" do
+      it "should be projected normal (dropped) onto plane" do
+        pending("not implemented")
+      end
+
+      it "should be projected along a vector onto plane" do
+        pending("not implemented")
+      end
+
+      it "should be projected normal (dropped) onto line" do
+        pending("not implemented")
+      end
+
+      it "should be projected along a vector onto line" do
+        pending("not implemented")
+      end
+
+      it "should be projected normal (dropped) onto line-segment" do
+        pending("not implemented")
+      end
+
+      it "should be projected along a vector onto line-segment" do
+        pending("not implemented")
+      end
     end
 
     describe "Translation:" do
