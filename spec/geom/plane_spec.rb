@@ -32,5 +32,16 @@ module Geom
       normal.y.should be_within(0.001).of(0.707)
       normal.z.should be_within(0.001).of(0)
     end
+
+    it "should determine if point is on plane" do
+      plane = Plane.new(0, 0, 1, 1)
+      point_1 = Point.new(0, 0, 1)
+      point_2 = Point.new(0, 0, 2)
+      point_3 = Point.new(0, 0, 1.0000000001)
+
+      plane.point_on?(point_1).should be_true
+      plane.point_on?(point_2).should be_false
+      plane.point_on?(point_3).should be_false
+    end
   end
 end

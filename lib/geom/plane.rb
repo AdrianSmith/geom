@@ -64,5 +64,14 @@ module Geom
       Vector.new(@a, @b, @c).unitize
     end
 
+    def point_on?(point)
+      test_point = point.drop(self);
+      if test_point.distance(point).abs >= TOLERANCE
+        false
+      else
+        true
+      end
+    end
+
   end
 end

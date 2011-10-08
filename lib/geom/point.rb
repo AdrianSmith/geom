@@ -28,7 +28,7 @@ module Geom
       @x.to_int ^ @y.to_int ^ @z.to_int
     end
 
-    def distance point
+    def distance(point)
       x_dist = @x - point.x
       y_dist = @y - point.y
       z_dist = @z - point.z
@@ -43,7 +43,14 @@ module Geom
     def project(plane, vector)
     end
 
-    def drop(plane, vector)
+    def drop(plane)
+      n = plane.normal
+      q = self.to_vector
+
+      r = (q.dot(n) - plane.d) / n.length
+
+      result = q - n.unitize.scale(r)
+      result.to_point
     end
 
     def between?(first_point, second_point)
