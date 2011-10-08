@@ -49,5 +49,20 @@ module Geom
         @d *= norm_factor
       end
     end
+
+    def == plane
+      (@a - plane.a).abs < TOLERANCE && (@b - plane.b).abs < TOLERANCE && (@c - plane.c).abs < TOLERANCE && (@d - plane.d).abs < TOLERANCE
+    end
+
+    alias_method :eql?, :==
+
+    def hash
+      @a.to_int ^ @b.to_int ^ @c.to_int ^ @d.to_int
+    end
+
+    def normal
+      Vector.new(@a, @b, @c).unitize
+    end
+
   end
 end
