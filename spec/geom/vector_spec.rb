@@ -92,16 +92,23 @@ module Geom
       v1 = Vector.new(1, 0, 0)
       v2 = Vector.new(1, 1, 0)
       v3 = Vector.new(-1, 0.001, 0)
-      v1.same_direction(v2).should be_true
-      v1.same_direction(v3).should be_false
+      v1.same_direction?(v2).should be_true
+      v1.same_direction?(v3).should be_false
     end
 
     it "should determine if parallel with another vector" do
-      pending("not implemented")
+      v1 = Vector.new(1, 0, 0)
+      v2 = Vector.new(-2, 0, 0)
+      v3 = Vector.new(-2, 0.001, 0)
+      v1.parallel?(v2).should be_true
+      v1.parallel?(v3).should be_false
     end
 
     it "should determine if zero vector" do
-      pending("not implemented")
+      v1 = Vector.new(0, 0, 0)
+      v2 = Vector.new(-2, 0, 0)
+      v1.zero?.should be_true
+      v2.zero?.should be_false
     end
 
     it "should calculated the average of an array of vectors" do
@@ -125,6 +132,9 @@ module Geom
       it "should return as array" do
         Vector.new(@valid_attributes).to_ary.should == @valid_attributes
       end
+    end
+
+    describe "Projection" do
     end
 
     describe "Translation:" do

@@ -32,7 +32,7 @@ module Geom
       x_dist = @x - point.x
       y_dist = @y - point.y
       z_dist = @z - point.z
-      Math::sqrt(x_dist * x_dist + y_dist * y_dist + z_dist * z_dist);
+      Math.sqrt(x_dist * x_dist + y_dist * y_dist + z_dist * z_dist);
     end
 
     def translate(direction, distance=1)

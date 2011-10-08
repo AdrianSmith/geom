@@ -50,7 +50,7 @@ module Geom
     end
 
     it "should calculated distance to another point" do
-      Point.new(0,0,0).distance(Point.new(1,3,2)).should == Math::sqrt(1*1 + 3*3 + 2*2)
+      Point.new(0,0,0).distance(Point.new(1,3,2)).should == Math.sqrt(1*1 + 3*3 + 2*2)
     end
 
     it "should calculated the average of an array of points" do

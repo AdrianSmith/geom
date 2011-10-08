@@ -71,8 +71,8 @@ module Geom
 
     def rotate(ref_vector, angle)
       r = [[0,0,0],[0,0,0],[0,0,0]]
-      c = Math::cos(angle)
-      s = Math::sin(angle)
+      c = Math.cos(angle)
+      s = Math.sin(angle)
 
       unit_ref_vector = ref_vector.unitize
 
@@ -108,35 +108,65 @@ module Geom
         # Would result in NaN
         0.0
       else
-        Math::acos(val)
+        Math.acos(val)
       end
     end
 
-    def self.average(vectors)
-      num = vectors.size.to_f
-      Vector.sum(vectors).scale(1/num)
-    end
-
-    def self.sum(vectors)
-      tx, ty, tz = 0, 0, 0
-      vectors.each do |vector|
-        tx += vector.x
-        ty += vector.y
-        tz += vector.z
+    def same_direction? vector
+      dotp = self.dot(vector);
+      # If dot product > 0, angle is acute and vectors are the same direction
+      # If dot product < 0, angle is obtuse and vectors are in opposite direction
+      # If dot product = 0, vectors are orthogonal, including if one is zero vector (taken as same direction)
+      if (dotp < 0)
+        false
+      else
+        true
       end
-      Vector.new(tx, ty, tz)
     end
 
-    def to_point
-      Point.new(@x,@y,@z)
+    def parallel?(vector)
+      angle = self.angle_between vector
+
+      if ((angle - Math::PI).abs < TOLERANCE) || (angle.abs < TOLERANCE)
+        true
+      else
+        false
+      end
     end
 
-    def to_s
-      "Vector(%.3f,%.3f,%.3f)" % [@x, @y, @z]
+    def zero?
+      if self.length <= 0.0
+        true
+      else
+        false
+      end
     end
 
-    def to_ary
-      [@x, @y, @z]
+      def self.average(vectors)
+        num = vectors.size.to_f
+        Vector.sum(vectors).scale(1/num)
+      end
+
+      def self.sum(vectors)
+        tx, ty, tz = 0, 0, 0
+        vectors.each do |vector|
+          tx += vector.x
+          ty += vector.y
+          tz += vector.z
+        end
+        Vector.new(tx, ty, tz)
+      end
+
+      def to_point
+        Point.new(@x,@y,@z)
+      end
+
+      def to_s
+        "Vector(%.3f,%.3f,%.3f)" % [@x, @y, @z]
+      end
+
+      def to_ary
+        [@x, @y, @z]
+      end
     end
   end
-end
