@@ -65,7 +65,7 @@ module Geom
     end
 
     def point_on?(point)
-      test_point = point.drop(self);
+      test_point = point.project(self);
       if test_point.distance(point).abs >= TOLERANCE
         false
       else

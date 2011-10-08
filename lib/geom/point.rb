@@ -40,10 +40,10 @@ module Geom
       Point.new(@x += transation_vector.x, @y += transation_vector.y, @z += transation_vector.z)
     end
 
-    def project(plane, vector)
+    def project_along(plane, vector)
     end
 
-    def drop(plane)
+    def project(plane)
       n = plane.normal
       q = self.to_vector
 

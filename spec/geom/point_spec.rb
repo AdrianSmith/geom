@@ -88,7 +88,16 @@ module Geom
 
     describe "Projection:" do
       it "should be projected normal (dropped) onto plane" do
-        pending("not implemented")
+        z_plane = Plane.new(0, 0, 1, 0)
+        oblique_plane = Plane.new(-1, 1, 0, 0)
+        oblique_offset_plane = Plane.new(0, 0, 1, 10)
+
+        point_1 = Point.new(1, 1, 1)
+        point_2 = Point.new(0, 1, 0)
+
+        point_1.project(z_plane).should == Point.new(1, 1, 0)
+        point_2.project(oblique_plane).should == Point.new(0.5, 0.5, 0)
+        point_1.project(oblique_offset_plane).should == Point.new(1, 1, 10)
       end
 
       it "should be projected along a vector onto plane" do
