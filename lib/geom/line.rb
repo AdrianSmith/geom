@@ -99,6 +99,17 @@ module Geom
       end
     end
 
+    def intersection_with_plane(plane)
+      var = [0,0]
+      var[0] = @x0 * plane.a + @y0 * plane.b + @z0 * plane.c
+      var[1] = @xa * plane.a + @ya * plane.b + @za * plane.c
+
+      raise ArgumentError.new("Line is parallel to the plane") if var[1] == 0
+
+      t = (plane.d - var[0]) / var[1]
+      Point.new((@x0 + @xa * t), (@y0 + @ya * t), (@z0 + @za * t))
+    end
+
     def on_plane?(plane)
       (self.point_at_parameter(0).on_plane?(plane) && self.point_at_parameter(1).on_plane?(plane)) ? true : false
     end

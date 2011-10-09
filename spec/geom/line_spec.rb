@@ -76,6 +76,12 @@ module Geom
         line.parameter_at_point(end_point).should == 1
         line.parameter_at_point(mid_point).should == 0.5
       end
+
+      it "should calculation intersection with a plane" do
+        plane = Plane.new(Point.new(0, 0, 0), Vector.new(0, 0, 1))
+        line = Line.new(Point.new(2, 2, 10), Point.new(2, 2, 20))
+        line.intersection_with_plane(plane).should == Point.new(2, 2, 0)
+      end
     end
   end
 end
