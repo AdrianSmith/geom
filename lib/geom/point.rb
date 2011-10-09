@@ -27,11 +27,20 @@ module Geom
       @x.to_int ^ @y.to_int ^ @z.to_int
     end
 
-    def distance(point)
+    def distance_to_point(point)
       x_dist = @x - point.x
       y_dist = @y - point.y
       z_dist = @z - point.z
       Math.sqrt(x_dist * x_dist + y_dist * y_dist + z_dist * z_dist)
+    end
+
+    def distance_to_plane(plane)
+      n = Vector.new(plane.a, plane.b, plane.c)
+      l = n.length
+      d = (plane.d / (l * l))
+      pnt = Point.new((plane.a * d), (plane.b * d), (plane.c * d))
+      vec = Vector.new(self, pnt)
+      vec.dot(n) / l
     end
 
     def translate(direction, distance=1)
@@ -39,7 +48,19 @@ module Geom
       Point.new(@x += transation_vector.x, @y += transation_vector.y, @z += transation_vector.z)
     end
 
-    def project(plane)
+    def project_onto_line(line)
+      l = line.xa * line.xa + line.ya * line.ya + line.za * line.za
+      m = 2 * (line.x0 - self.x) * line.xa + 2 * (line.y0 - self.y) * line.ya + 2 * (line.z0 - self.z) * line.za
+      t = -m / (2 * l)
+      Point.new(line.x0 + line.xa * t, line.y0 + line.ya * t, line.z0 + line.za * t)
+    end
+
+    def project_onto_line_along_vector(line, vector)
+      ref_line = Line.new(@x, vector.x, @y, vector.y, @z, vector.z)
+      line.intersection_with_line(ref_line)
+    end
+
+    def project_onto_plane(plane)
       n = plane.normal
       q = self.to_vector
 
@@ -49,7 +70,7 @@ module Geom
       result.to_point
     end
 
-    def project_along(plane, vector)
+    def project_onto_plane_along_vector(plane, vector)
 
       l = Math.sqrt(plane.a * plane.a + plane.b * plane.b + plane.c * plane.c)
       d = (plane.d / (l * l))
@@ -63,13 +84,30 @@ module Geom
       r.to_point
     end
 
-    def between?(first_point, second_point)
+    def between?(first_point, second_point, include_ends=true)
+      line = Line.new(first_point, second_point)
+      projected_point = self.project_onto_line(line)
+
+      distance_12 = first_point.distance_to_point(second_point)
+      distance_T1 = first_point.distance_to_point(projected_point)
+      distance_T2 = second_point.distance_to_point(projected_point)
+
+      if include_ends
+        ((distance_T1 < distance_12) && (distance_T2 < distance_12)) ? true : false
+      else
+        ((distance_T1 <= distance_12) && (distance_T2 <= distance_12)) ? true : false
+      end
+    end
+
+    def on_plane?(plane)
+      projected_point = self.project_onto_plane(plane)
+      projected_point.distance_to_point(self).abs <= TOLERANCE ? true : false
     end
 
 
-    def on_plane?(plane)
-      test_point = self.project(plane)
-      test_point.distance(self).abs <= TOLERANCE ? true : false
+    def on_line(line)
+      projected_point = self.project_onto_line(line)
+      self.Distance(projected_point) <= Tolerance ? true : false
     end
 
     def self.remove_coincident(points)

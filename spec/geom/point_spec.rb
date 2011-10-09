@@ -50,7 +50,17 @@ module Geom
     end
 
     it "should calculated distance to another point" do
-      Point.new(0,0,0).distance(Point.new(1,3,2)).should == Math.sqrt(1*1 + 3*3 + 2*2)
+      Point.new(0,0,0).distance_to_point(Point.new(1,3,2)).should == Math.sqrt(1*1 + 3*3 + 2*2)
+    end
+
+    it "should calculate minimum distance to a plane" do
+      plane_1 = Plane.new(3, 2, 6, 6)
+      point_1 = Point.new(1, 1, 3)
+      point_1.distance_to_plane(plane_1).should be_within(0.001).of(-2.429)
+
+      plane_2 = Plane.new(2, 3, 4, 20)
+      point_2 = Point.new(1, 2, 3)
+      point_2.distance_to_plane(plane_2).should be_within(0.001).of(0.0)
     end
 
     it "should calculated the average of an array of points" do
@@ -72,15 +82,15 @@ module Geom
     end
 
     it "should determine if point is between two other points" do
-      # p1 = Point.new(0,-1,0)
-      # p2 = Point.new(4,-1,0)
-      # p3 = Point.new(9,-1,0)
-      # p2.between?(p1, p3).should be_true
-      # p1.between?(p2, p3).should be_false
-      pending("not implemented")
+      p1 = Point.new(0,-1,0)
+      p2 = Point.new(4,-1,0)
+      p3 = Point.new(9,-1,0)
+      p2.between?(p1, p3).should be_true
+      p1.between?(p2, p3).should be_false
     end
 
-    it "should determine if an array of point is collinear" do
+    it "should determine if an array of points is collinear" do
+    end
 
     it "should determine if point is on plane" do
       plane = Plane.new(0, 0, 1, 1)
@@ -102,9 +112,9 @@ module Geom
         point_1 = Point.new(1, 1, 1)
         point_2 = Point.new(0, 1, 0)
 
-        point_1.project(z_plane).should == Point.new(1, 1, 0)
-        point_2.project(oblique_plane).should == Point.new(0.5, 0.5, 0)
-        point_1.project(oblique_offset_plane).should == Point.new(1, 1, 10)
+        point_1.project_onto_plane(z_plane).should == Point.new(1, 1, 0)
+        point_2.project_onto_plane(oblique_plane).should == Point.new(0.5, 0.5, 0)
+        point_1.project_onto_plane(oblique_offset_plane).should == Point.new(1, 1, 10)
       end
 
       it "should be projected along a vector onto plane" do
@@ -112,7 +122,7 @@ module Geom
         plane = Plane.new(Point.new(1,1,3), Point.new(0,0,3), Point.new(-1,1,3))
         direction = Vector.new(1,1,4)
         start_point = Point.new(5,5,0)
-        end_point = start_point.project_along(plane, direction)
+        end_point = start_point.project_onto_plane_along_vector(plane, direction)
 
         end_point.x.should be_within(0.001).of(5.75)
         end_point.y.should be_within(0.001).of(5.75)
@@ -120,19 +130,19 @@ module Geom
       end
 
       it "should be projected normal (dropped) onto line" do
-        pending("not implemented")
+        line = Line.new(1, 1, 3, -1, 0, 2)
+        point_1 = Point.new(1, 1, 5)
+        point_1.project_onto_line(line).should == Point.new(3, 1, 4)
+
+        point_2 = Point.new(1, 3, 0)
+        point_2.project_onto_line(line).should == Point.new(1, 3, 0)
       end
 
       it "should be projected along a vector onto line" do
-        pending("not implemented")
-      end
-
-      it "should be projected normal (dropped) onto line-segment" do
-        pending("not implemented")
-      end
-
-      it "should be projected along a vector onto line-segment" do
-        pending("not implemented")
+        line = Line.new(Point.new(0, 0, 0), Point.new(2, 0, 0))
+        point = Point.new(0, 1, 0)
+        direction = Vector.new(1, -1, 0)
+        point.project_onto_line_along_vector(line, direction).should == Point.new(1, 0, 0)
       end
     end
 

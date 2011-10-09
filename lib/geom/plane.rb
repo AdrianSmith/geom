@@ -52,19 +52,6 @@ module Geom
       Vector.new(@a, @b, @c).unitize
     end
 
-    def line_on?(line)
-      (this.point_on?(line.point_at_parameter(0) && this.point_on?(line.point_at_parameter(1)))) ? true : false
-    end
-
-    def distance_to(point)
-      n = Vector.new(@a, @b, @c)
-      l = n.length
-      d = (@d / (l * l))
-      pnt = Point.new((@a * d), (@b * d), (@c * d))
-      vec = Vector.new(point, pnt)
-      vec.dot(n) / l
-    end
-
     def to_s
       "Plane(%.3f,%.3f,%.3f,%.3f)" % [@a, @b, @c, @d]
     end

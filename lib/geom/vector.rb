@@ -25,8 +25,8 @@ module Geom
     end
 
     def == vector
-      (@x - vector.x).abs < TOLERANCE && 
-      (@y - vector.y).abs < TOLERANCE && 
+      (@x - vector.x).abs < TOLERANCE &&
+      (@y - vector.y).abs < TOLERANCE &&
       (@z - vector.z).abs < TOLERANCE
     end
 
@@ -124,7 +124,7 @@ module Geom
     end
 
     def parallel?(vector)
-      angle = self.angle_between vector
+      angle = self.angle_between(vector)
       ((angle - Math::PI).abs < TOLERANCE) || (angle.abs < TOLERANCE) ? true : false
     end
 
