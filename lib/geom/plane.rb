@@ -1,7 +1,3 @@
-require 'geom/tolerance'
-require 'geom/vector'
-require 'geom/point'
-
 module Geom
   class Plane
     attr_accessor :a, :b, :c, :d
@@ -27,10 +23,10 @@ module Geom
         vector_13 = Vector.new(point_1, point_3)
         plane_normal = vector_12.cross(vector_13)
 
-        @a = plane_normal.x;
-        @b = plane_normal.y;
-        @c = plane_normal.z;
-        @d = ((point_1.x * @a) + ((point_1.y * @b) + (point_1.z * @c)));
+        @a = plane_normal.x
+        @b = plane_normal.y
+        @c = plane_normal.z
+        @d = ((point_1.x * @a) + ((point_1.y * @b) + (point_1.z * @c)))
 
       else # Coefficients of plane equation
         @a, @b, @c, @d = args.flatten
@@ -52,13 +48,17 @@ module Geom
       Vector.new(@a, @b, @c).unitize
     end
 
-    def point_on?(point)
-      test_point = point.project(self);
-      if test_point.distance(point).abs >= TOLERANCE
-        false
-      else
-        true
-      end
+    def line_on?(line)
+      (this.point_on?(line.point_at_parameter(0) && this.point_on?(line.point_at_parameter(1)))) ? true : false
+    end
+
+    def distance_to(point)
+      n = Vector.new(@a, @b, @c)
+      l = n.length
+      d = (@d / (l * l))
+      pnt = Point.new((@a * d), (@b * d), (@c * d))
+      vec = Vector.new(point, pnt)
+      vec.dot(n) / l
     end
 
     def to_s
@@ -66,16 +66,16 @@ module Geom
     end
 
     def normalize
-       if (@a == 0 && @b == 0 && @c == 0)
-         raise ArgumentError.new("Plane definition error, points may be coincident or collinear")
-       else
-         norm_factor = 1.0 / Math.sqrt((@a * @a + @b * @b + @c * @c))
-         @a *= norm_factor
-         @b *= norm_factor
-         @c *= norm_factor
-         @d *= norm_factor
-       end
-     end
+      if (@a == 0 && @b == 0 && @c == 0)
+        raise ArgumentError.new("Plane definition error, points may be coincident or collinear")
+      else
+        norm_factor = 1.0 / Math.sqrt((@a * @a + @b * @b + @c * @c))
+        @a *= norm_factor
+        @b *= norm_factor
+        @c *= norm_factor
+        @d *= norm_factor
+      end
+    end
 
   end
 end

@@ -86,6 +86,18 @@ module Geom
       pending("not implemented")
     end
 
+
+    it "should determine if point is on plane" do
+      plane = Plane.new(0, 0, 1, 1)
+      point_1 = Point.new(0, 0, 1)
+      point_2 = Point.new(0, 0, 2)
+      point_3 = Point.new(0, 0, 1.0000000001)
+
+      point_1.on_plane?(plane).should be_true
+      point_2.on_plane?(plane).should be_false
+      point_3.on_plane?(plane).should be_false
+    end
+
     describe "Projection:" do
       it "should be projected normal (dropped) onto plane" do
         z_plane = Plane.new(0, 0, 1, 0)
@@ -114,7 +126,7 @@ module Geom
 
       it "should be projected normal (dropped) onto line" do
         pending("not implemented")
-      end 
+      end
 
       it "should be projected along a vector onto line" do
         pending("not implemented")

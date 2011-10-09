@@ -1,7 +1,5 @@
 require_relative '../spec_helper.rb'
-require 'geom/plane'
-require 'geom/point'
-require 'geom/vector'
+require 'geom/plane.rb'
 
 module Geom
   describe Plane do
@@ -33,25 +31,30 @@ module Geom
       normal.z.should be_within(0.001).of(0)
     end
 
-    it "should determine if point is on plane" do
-      plane = Plane.new(0, 0, 1, 1)
-      point_1 = Point.new(0, 0, 1)
-      point_2 = Point.new(0, 0, 2)
-      point_3 = Point.new(0, 0, 1.0000000001)
+    it "should calculate minimum distance to point" do
+      plane_1 = Plane.new(3, 2, 6, 6)
+      point_1 = Point.new(1, 1, 3)
+      plane_1.distance_to(point_1).should be_within(0.001).of(-2.429)
 
-      plane.point_on?(point_1).should be_true
-      plane.point_on?(point_2).should be_false
-      plane.point_on?(point_3).should be_false
+      plane_2 = Plane.new(2, 3, 4, 20)
+      point_2 = Point.new(1, 2, 3)
+      plane_2.distance_to(point_2).should be_within(0.001).of(0.0)
     end
 
-    it "should calculate minimum distance to point" do
-      plane_1 = Plane.new(3, 2, 6, 6);
-      point_1 = Point.new(1, 1, 3);
-      plane_1.distance_to(point_1).should be_within(0.001).of(2.429)
-
-      plane_2 = Plane.new(2, 3, 4, 20);
-      point_2 = Point.new(1, 2, 3);
-      plane_2.distance_to(point_2).should be_within(0.001).of(0.0)
+    it "should determine if line is on plane" do
+      # # Line on plane
+      # plane = Plane.new(0, 0, 1, 0)
+      #
+      # line_1 = Line.new(Point.new(1, 1, 0), Point.new(2, -3, 0))
+      # plane.line_on?(line_1).should be_true
+      #
+      # # Line parallel to plane
+      # line_2 = new Line(Point.new(1, 1, 1), Point.new(2, -3, 1))
+      # plane.line_on?(line_2).should be_false
+      #
+      # # Line intersects plane
+      # line_3 = new Line(Point.new(1, 1, 0), Point.new(2, -3, 1))
+      # plane.line_on?(line_2).should be_false
     end
   end
 end

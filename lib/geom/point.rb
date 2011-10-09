@@ -1,6 +1,3 @@
-require 'geom/tolerance'
-require 'geom/vector'
-
 module Geom
   class Point
     attr_accessor :x, :y, :z
@@ -65,6 +62,12 @@ module Geom
     end
 
     def between?(first_point, second_point)
+    end
+
+
+    def on_plane?(plane)
+      test_point = self.project(plane)
+      test_point.distance(self).abs <= TOLERANCE ? true : false
     end
 
     def self.remove_coincident(points)

@@ -123,6 +123,15 @@ module Geom
       Vector.sum(vectors).should == result_vector
     end
 
+    it "should calculate a new vector rotated around an axis vector a supplied angle" do
+       vector_1 = Vector.new(3.2, 0, 0)
+       axis = Vector.new(0, 0, -1)
+       vector_2 = vector_1.rotate(axis, (33 * Math::PI / 180))
+       vector_2.x.should be_within(0.001).of(2.684)
+       vector_2.y.should be_within(0.001).of(-1.743)
+       vector_2.z.should be_within(0.001).of(0.0)
+    end
+
     describe "Return Types:" do
 
       it "should return as point" do
@@ -131,32 +140,6 @@ module Geom
 
       it "should return as array" do
         Vector.new(@valid_attributes).to_ary.should == @valid_attributes
-      end
-    end
-
-    describe "Projection" do
-      it "should be projected normal (dropped) onto plane" do
-        pending("not implemented")
-      end
-
-      it "should be projected along a vector onto plane" do
-        pending("not implemented")
-      end
-
-      it "should be projected normal (dropped) onto line" do
-        pending("not implemented")
-      end
-
-      it "should be projected along a vector onto line" do
-        pending("not implemented")
-      end
-
-      it "should be projected normal (dropped) onto line-segment" do
-        pending("not implemented")
-      end
-
-      it "should be projected along a vector onto line-segment" do
-        pending("not implemented")
       end
     end
 

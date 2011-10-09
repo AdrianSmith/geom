@@ -1,6 +1,3 @@
-require 'geom/tolerance'
-require 'geom/vector'
-
 module Geom
   class Vector
     attr_accessor :x, :y, :z
@@ -126,12 +123,7 @@ module Geom
 
     def parallel?(vector)
       angle = self.angle_between vector
-
-      if ((angle - Math::PI).abs < TOLERANCE) || (angle.abs < TOLERANCE)
-        true
-      else
-        false
-      end
+      ((angle - Math::PI).abs < TOLERANCE) || (angle.abs < TOLERANCE) ? true : false
     end
 
     def zero?
