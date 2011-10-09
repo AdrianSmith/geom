@@ -27,6 +27,12 @@ module Geom
       line.za.should == 2
     end
 
+    it "should determine if another line is equal" do
+      line_1 = Line.new(Point.new(0, 0, 0), Point.new(2, 2, 2))
+      line_2 = Line.new(Point.new(0, 0, 0), Point.new(2, 2, 2))
+      line_1.should == line_2
+    end
+
     it "should determine if line is on plane" do
       # Line on plane
       plane = Plane.new(0, 0, 1, 0)
@@ -83,5 +89,10 @@ module Geom
         line.intersection_with_plane(plane).should == Point.new(2, 2, 0)
       end
     end
+
+    it "should return a summary string" do
+      Line.new(1,2,3,1,0,0).to_s.should == "Line(1.000,2.000,3.000,1.000,0.000,0.000)"
+    end
+
   end
 end

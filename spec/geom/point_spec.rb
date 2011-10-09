@@ -118,7 +118,6 @@ module Geom
       end
 
       it "should be projected along a vector onto plane" do
-
         plane = Plane.new(Point.new(1,1,3), Point.new(0,0,3), Point.new(-1,1,3))
         direction = Vector.new(1,1,4)
         start_point = Point.new(5,5,0)
@@ -162,6 +161,10 @@ module Geom
     end
 
     describe "Transformation:" do
+    end
+
+    it "should return a summary string" do
+      Point.new(1,2,3).to_s.should == "Point(1.000,2.000,3.000)"
     end
 
   end

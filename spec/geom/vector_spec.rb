@@ -149,5 +149,9 @@ module Geom
     describe "Transformation:" do
     end
 
+    it "should return a summary string" do
+      Vector.new(1,2,3).to_s.should == "Vector(1.000,2.000,3.000)"
+    end
+
   end
 end
