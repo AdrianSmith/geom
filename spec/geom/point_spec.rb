@@ -110,32 +110,11 @@ module Geom
         end_point.x.should be_within(0.001).of(5.75)
         end_point.y.should be_within(0.001).of(5.75)
         end_point.z.should be_within(0.001).of(3)
-
-
-        # InnerPlane InnerPlane = new InnerPlane(new InnerPoint(1, 1, 3), new InnerPoint(0, 0, 3), new InnerPoint(-1, 1, 3))
-        # InnerVector vector = new InnerVector(1, 1, 4)
-        # InnerPoint testInnerPoint = new InnerPoint(5, 5, 0)
-        # InnerPoint expProjection = new InnerPoint(5.75, 5.75, 3)
-        # testInnerPoint.Project(InnerPlane, vector)
-        #
-        # Assert.AreEqual(expProjection.X, testInnerPoint.X, 0.001, "X component")
-        # Assert.AreEqual(expProjection.Y, testInnerPoint.Y, 0.001, "Y component")
-        # Assert.AreEqual(expProjection.Z, testInnerPoint.Z, 0.001, "Z component")
-        #
-        # InnerPlane = new InnerPlane(2, 2, 2, 4)
-        # vector = new InnerVector(5, 5, 0)
-        # testInnerPoint = new InnerPoint(-10, -10, -10)
-        # expProjection = new InnerPoint(6, 6, -10)
-        # testInnerPoint.Project(InnerPlane, vector)
-        #
-        # Assert.AreEqual(expProjection.X, testInnerPoint.X, 0.001,"X component")
-        # Assert.AreEqual(expProjection.Y, testInnerPoint.Y, 0.001, "Y component")
-        # Assert.AreEqual(expProjection.Z, testInnerPoint.Z, 0.001, "Z component")
       end
 
       it "should be projected normal (dropped) onto line" do
         pending("not implemented")
-      end
+      end 
 
       it "should be projected along a vector onto line" do
         pending("not implemented")
