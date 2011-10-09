@@ -42,19 +42,19 @@ module Geom
     end
 
     it "should determine if line is on plane" do
-      # # Line on plane
-      # plane = Plane.new(0, 0, 1, 0)
-      #
-      # line_1 = Line.new(Point.new(1, 1, 0), Point.new(2, -3, 0))
-      # plane.line_on?(line_1).should be_true
-      #
-      # # Line parallel to plane
-      # line_2 = new Line(Point.new(1, 1, 1), Point.new(2, -3, 1))
-      # plane.line_on?(line_2).should be_false
-      #
-      # # Line intersects plane
-      # line_3 = new Line(Point.new(1, 1, 0), Point.new(2, -3, 1))
-      # plane.line_on?(line_2).should be_false
+      # Line on plane
+      plane = Plane.new(0, 0, 1, 0)
+
+      line_1 = Line.new(Point.new(1, 1, 0), Point.new(2, -3, 0))
+      plane.line_on?(line_1).should be_true
+
+      # Line parallel to plane
+      line_2 = new Line(Point.new(1, 1, 1), Point.new(2, -3, 1))
+      plane.line_on?(line_2).should be_false
+
+      # Line intersects plane
+      line_3 = new Line(Point.new(1, 1, 0), Point.new(2, -3, 1))
+      plane.line_on?(line_2).should be_false
     end
   end
 end

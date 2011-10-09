@@ -81,11 +81,6 @@ module Geom
     end
 
     it "should determine if an array of point is collinear" do
-      # Point.collinear?([Point.new(1,-1,0), Point.new(2,-1,0), Point.new(100000,-1,0)]).should == true
-      # Point.collinear?([Point.new(1,-1.01,0), Point.new(2,-1,0), Point.new(100000,-1,0)]).should == false
-      pending("not implemented")
-    end
-
 
     it "should determine if point is on plane" do
       plane = Plane.new(0, 0, 1, 1)
