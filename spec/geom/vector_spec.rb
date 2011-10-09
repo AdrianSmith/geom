@@ -8,17 +8,17 @@ module Geom
     end
 
     it "should create a valid instance from an array of coordinates" do
-      test_vector = Vector.new(@valid_attributes)
-      test_vector.x.should == @valid_attributes[0]
-      test_vector.y.should == @valid_attributes[1]
-      test_vector.z.should == @valid_attributes[2]
+      vector = Vector.new(@valid_attributes)
+      vector.x.should == @valid_attributes[0]
+      vector.y.should == @valid_attributes[1]
+      vector.z.should == @valid_attributes[2]
     end
 
     it "should create a valid instance from three numbers" do
-      test_vector = Vector.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
-      test_vector.x.should == @valid_attributes[0]
-      test_vector.y.should == @valid_attributes[1]
-      test_vector.z.should == @valid_attributes[2]
+      vector = Vector.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
+      vector.x.should == @valid_attributes[0]
+      vector.y.should == @valid_attributes[1]
+      vector.z.should == @valid_attributes[2]
     end
 
     it "should create a valid instance from two points" do

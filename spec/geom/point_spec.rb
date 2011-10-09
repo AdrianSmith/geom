@@ -8,17 +8,17 @@ module Geom
     end
 
     it "should create a valid instance from an array of coordinates" do
-      test_point = Point.new(@valid_attributes)
-      test_point.x.should == @valid_attributes[0]
-      test_point.y.should == @valid_attributes[1]
-      test_point.z.should == @valid_attributes[2]
+      point = Point.new(@valid_attributes)
+      point.x.should == @valid_attributes[0]
+      point.y.should == @valid_attributes[1]
+      point.z.should == @valid_attributes[2]
     end
 
     it "should create a valid instance from three numbers" do
-      test_point = Point.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
-      test_point.x.should == @valid_attributes[0]
-      test_point.y.should == @valid_attributes[1]
-      test_point.z.should == @valid_attributes[2]
+      point = Point.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
+      point.x.should == @valid_attributes[0]
+      point.y.should == @valid_attributes[1]
+      point.z.should == @valid_attributes[2]
     end
 
     describe "Arithmetic:" do

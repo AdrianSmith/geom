@@ -15,7 +15,9 @@ module Geom
     end
 
     def == point
-      (@x - point.x).abs < TOLERANCE && (@y - point.y).abs < TOLERANCE && (@z - point.z).abs < TOLERANCE
+      (@x - point.x).abs < TOLERANCE &&
+      (@y - point.y).abs < TOLERANCE &&
+      (@z - point.z).abs < TOLERANCE
     end
 
     alias_method :eql?, :==

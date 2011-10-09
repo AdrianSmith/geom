@@ -8,19 +8,19 @@ module Geom
     end
 
     it "should create a valid instance from an array of coordinates" do
-      test_plane = Plane.new(@valid_attributes)
-      test_plane.a.should be_within(0.001).of(-0.707)
-      test_plane.b.should be_within(0.001).of(0.707)
-      test_plane.c.should == 0
-      test_plane.d.should be_within(0.001).of(0.283)
+      plane = Plane.new(@valid_attributes)
+      plane.a.should be_within(0.001).of(-0.707)
+      plane.b.should be_within(0.001).of(0.707)
+      plane.c.should be_within(0.001).of(0.0)
+      plane.d.should be_within(0.001).of(0.283)
     end
 
     it "should create a valid instance from three numbers" do
-      test_plane = Plane.new(Point.new(0, 3, 0), Vector.new(0, 3, 0))
-      test_plane.a.should == 0
-      test_plane.b.should == 1
-      test_plane.c.should == 0
-      test_plane.d.should == 3
+      plane = Plane.new(Point.new(0, 3, 0), Vector.new(0, 3, 0))
+      plane.a.should == 0
+      plane.b.should == 1
+      plane.c.should == 0
+      plane.d.should == 3
     end
 
     it "should calculate the plane normal vector" do

@@ -1,5 +1,6 @@
 module Geom
   class Plane
+    # Plane defined by the equation:Ax + By + Cz = D
     attr_accessor :a, :b, :c, :d
 
     def initialize *args
@@ -35,7 +36,10 @@ module Geom
     end
 
     def == plane
-      (@a - plane.a).abs < TOLERANCE && (@b - plane.b).abs < TOLERANCE && (@c - plane.c).abs < TOLERANCE && (@d - plane.d).abs < TOLERANCE
+      (@a - plane.a).abs < TOLERANCE &&
+      (@b - plane.b).abs < TOLERANCE &&
+      (@c - plane.c).abs < TOLERANCE &&
+      (@d - plane.d).abs < TOLERANCE
     end
 
     alias_method :eql?, :==

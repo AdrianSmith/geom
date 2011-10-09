@@ -25,7 +25,9 @@ module Geom
     end
 
     def == vector
-      (@x - vector.x).abs < TOLERANCE && (@y - vector.y).abs < TOLERANCE && (@z - vector.z).abs < TOLERANCE
+      (@x - vector.x).abs < TOLERANCE && 
+      (@y - vector.y).abs < TOLERANCE && 
+      (@z - vector.z).abs < TOLERANCE
     end
 
     alias_method :eql?, :==
