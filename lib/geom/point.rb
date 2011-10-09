@@ -104,8 +104,7 @@ module Geom
       projected_point.distance_to_point(self).abs <= TOLERANCE ? true : false
     end
 
-
-    def on_line(line)
+    def on_line?(line)
       projected_point = self.project_onto_line(line)
       self.Distance(projected_point) <= Tolerance ? true : false
     end
