@@ -32,15 +32,12 @@ module Geom
       x_dist = @x - point.x
       y_dist = @y - point.y
       z_dist = @z - point.z
-      Math.sqrt(x_dist * x_dist + y_dist * y_dist + z_dist * z_dist);
+      Math.sqrt(x_dist * x_dist + y_dist * y_dist + z_dist * z_dist)
     end
 
     def translate(direction, distance=1)
       transation_vector = direction.unitize.scale distance
       Point.new(@x += transation_vector.x, @y += transation_vector.y, @z += transation_vector.z)
-    end
-
-    def project_along(plane, vector)
     end
 
     def project(plane)
@@ -51,6 +48,20 @@ module Geom
 
       result = q - n.unitize.scale(r)
       result.to_point
+    end
+
+    def project_along(plane, vector)
+
+      l = Math.sqrt(plane.a * plane.a + plane.b * plane.b + plane.c * plane.c)
+      d = (plane.d / (l * l))
+      q = Point.new((plane.a * d), (plane.b * d), (plane.c * d))
+      v = Vector.new(q, self)
+
+      u = plane.normal
+      w = vector.scale((v.dot(u) / vector.dot(u)))
+      r = q.to_vector + (v - w)
+
+      r.to_point
     end
 
     def between?(first_point, second_point)
