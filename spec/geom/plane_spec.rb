@@ -43,5 +43,15 @@ module Geom
       plane.point_on?(point_2).should be_false
       plane.point_on?(point_3).should be_false
     end
+
+    it "should calculate minimum distance to point" do
+      plane_1 = Plane.new(3, 2, 6, 6);
+      point_1 = Point.new(1, 1, 3);
+      plane_1.distance_to(point_1).should be_within(0.001).of(2.429)
+
+      plane_2 = Plane.new(2, 3, 4, 20);
+      point_2 = Point.new(1, 2, 3);
+      plane_2.distance_to(point_2).should be_within(0.001).of(0.0)
+    end
   end
 end
