@@ -113,9 +113,6 @@ module Geom
       points.uniq
     end
 
-    def self.collinear(points)
-    end
-
     def self.average(points)
       tx, ty, tz = 0, 0, 0
       num = points.size.to_f

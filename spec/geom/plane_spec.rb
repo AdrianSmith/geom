@@ -1,5 +1,5 @@
 require_relative '../spec_helper.rb'
-require 'geom/plane.rb'
+require 'geom/plane'
 
 module Geom
   describe Plane do
