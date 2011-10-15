@@ -157,7 +157,7 @@ module Geom
       vector_2.z.should be_within(0.001).of(0.0)
     end
 
-    describe "Return Types:" do
+    describe "Return Types" do
       it "should return as point" do
         Vector.new(@valid_attributes).to_point.should == Point.new(@valid_attributes)
       end
@@ -165,16 +165,15 @@ module Geom
       it "should return as array" do
         Vector.new(@valid_attributes).to_ary.should == @valid_attributes
       end
+      it "should return a summary string" do
+        Vector.new(1,2,3).to_s.should == "Vector(1.000,2.000,3.000)"
+      end
     end
 
-    describe "Translation:" do
+    describe "Translation" do
     end
 
-    describe "Transformation:" do
-    end
-
-    it "should return a summary string" do
-      Vector.new(1,2,3).to_s.should == "Vector(1.000,2.000,3.000)"
+    describe "Transformation" do
     end
 
   end
