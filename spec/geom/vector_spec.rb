@@ -3,32 +3,34 @@ require 'geom/vector'
 
 module Geom
   describe Vector do
-    before do
-      @valid_attributes = [1.1, -2, 10]
+    describe "Construction" do
+      before do
+        @valid_attributes = [1.1, -2, 10]
+      end
+
+      it "should create a valid instance from an array of coordinates" do
+        vector = Vector.new(@valid_attributes)
+        vector.x.should == @valid_attributes[0]
+        vector.y.should == @valid_attributes[1]
+        vector.z.should == @valid_attributes[2]
+      end
+
+      it "should create a valid instance from three numbers" do
+        vector = Vector.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
+        vector.x.should == @valid_attributes[0]
+        vector.y.should == @valid_attributes[1]
+        vector.z.should == @valid_attributes[2]
+      end
+
+      it "should create a valid instance from two points" do
+        from_point = Point.new(0,-3,-1)
+        to_point = Point.new(3,-3,6)
+        result = Vector.new(3,0,7)
+        Vector.new(from_point, to_point).should == result
+      end
     end
 
-    it "should create a valid instance from an array of coordinates" do
-      vector = Vector.new(@valid_attributes)
-      vector.x.should == @valid_attributes[0]
-      vector.y.should == @valid_attributes[1]
-      vector.z.should == @valid_attributes[2]
-    end
-
-    it "should create a valid instance from three numbers" do
-      vector = Vector.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
-      vector.x.should == @valid_attributes[0]
-      vector.y.should == @valid_attributes[1]
-      vector.z.should == @valid_attributes[2]
-    end
-
-    it "should create a valid instance from two points" do
-      from_point = Point.new(0,-3,-1)
-      to_point = Point.new(3,-3,6)
-      result = Vector.new(3,0,7)
-      Vector.new(from_point, to_point).should == result
-    end
-
-    describe "Arithmetic:" do
+    describe "Arithmetic" do
       before do
         @first_vector  = Vector.new(0,0,0)
         @second_vector = Vector.new(1,2,3)
@@ -69,23 +71,31 @@ module Geom
       Vector.new(1,-1,9).reverse.should == Vector.new(-1,1,-9)
     end
 
-    it "should calculate angle to another vector" do
-      v1 = Vector.new(2, 0, 0)
-      v2 = Vector.new(0, -3, 0)
-      v1.angle_between(v2).should == Math::PI / 2
+    describe "should calculate angle to another vector" do
+      before do
+        @v1 = Vector.new(2, 0, 0)
+        @v2 = Vector.new(0, -3, 0)
+        @v3 = Vector.new(0, 3, 0)
+        @v4 = Vector.new(-2, -2, 0)
+        @v5 = Vector.new(0, 1, 0)
+        @v6 = Vector.new(0, -1, 0)
+      end
 
-      v4 = Vector.new(2, 0, 0)
-      v5 = Vector.new(0, 3, 0)
-      v4.angle_between(v5).should == Math::PI / 2
+      it "when vectors are separated by 90 degrees and in fourth quadrant" do
+        @v1.angle_between(@v2).should == Math::PI / 2
+      end
 
-      v7 = Vector.new(2, 0, 0)
-      v8 = Vector.new(-2, -2, 0)
-      v7.angle_between(v8).should == Math::PI * (3 / 4.0)
+      it "when vectors are separated by 90 degrees and in first quadrant" do
+        @v1.angle_between(@v3).should == Math::PI / 2
+      end
 
+      it "when vectors are separated by 135 degrees and in the first and second quadrants" do
+        @v1.angle_between(@v4).should == Math::PI * (3 / 4.0)
+      end
 
-      v14 = Vector.new(0, 1, 0)
-      v15 = Vector.new(0, -1, 0)
-      v14.angle_between(v15).should == Math::PI
+      it "when vectors are separated by 180 degrees" do
+        @v5.angle_between(@v6).should == Math::PI
+      end
     end
 
     it "should determine if same direction with another vector" do
@@ -124,12 +134,12 @@ module Geom
     end
 
     it "should calculate a new vector rotated around an axis vector a supplied angle" do
-       vector_1 = Vector.new(3.2, 0, 0)
-       axis = Vector.new(0, 0, -1)
-       vector_2 = vector_1.rotate(axis, (33 * Math::PI / 180))
-       vector_2.x.should be_within(0.001).of(2.684)
-       vector_2.y.should be_within(0.001).of(-1.743)
-       vector_2.z.should be_within(0.001).of(0.0)
+      vector_1 = Vector.new(3.2, 0, 0)
+      axis = Vector.new(0, 0, -1)
+      vector_2 = vector_1.rotate(axis, (33 * Math::PI / 180))
+      vector_2.x.should be_within(0.001).of(2.684)
+      vector_2.y.should be_within(0.001).of(-1.743)
+      vector_2.z.should be_within(0.001).of(0.0)
     end
 
     describe "Return Types:" do
