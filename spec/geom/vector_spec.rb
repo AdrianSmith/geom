@@ -3,11 +3,11 @@ require 'geom/vector'
 
 module Geom
   describe Vector do
-    describe "Construction" do
-      before do
-        @valid_attributes = [1.1, -2, 10]
-      end
+    before do
+      @valid_attributes = [1.1, -2, 10]
+    end
 
+    describe "Construction" do
       it "should create a valid instance from an array of coordinates" do
         vector = Vector.new(@valid_attributes)
         vector.x.should == @valid_attributes[0]
@@ -98,20 +98,35 @@ module Geom
       end
     end
 
-    it "should determine if same direction with another vector" do
-      v1 = Vector.new(1, 0, 0)
-      v2 = Vector.new(1, 1, 0)
-      v3 = Vector.new(-1, 0.001, 0)
-      v1.same_direction?(v2).should be_true
-      v1.same_direction?(v3).should be_false
+    describe "should determine if vectors have same direction" do
+      before do
+        @v1 = Vector.new(1, 0, 0)
+        @v2 = Vector.new(1, 1, 0)
+        @v3 = Vector.new(-1, 0.001, 0)
+      end
+
+      it "when vectors are 45 degrees apart" do
+        @v1.same_direction?(@v2).should be_true
+      end
+
+      it "when vectors are 180 degrees apart" do
+        @v1.same_direction?(@v3).should be_false
+      end
     end
 
-    it "should determine if parallel with another vector" do
-      v1 = Vector.new(1, 0, 0)
-      v2 = Vector.new(-2, 0, 0)
-      v3 = Vector.new(-2, 0.001, 0)
-      v1.parallel?(v2).should be_true
-      v1.parallel?(v3).should be_false
+    describe "should determine if parallel with another vector" do
+      before do
+        @v1 = Vector.new(1, 0, 0)
+        @v2 = Vector.new(-2, 0, 0)
+        @v3 = Vector.new(-2, 0.001, 0)
+      end
+      it "when vectors are 180 degrees apart" do
+        @v1.parallel?(@v2).should be_true
+      end
+
+      it "when vectors are slightly misaligned" do
+        @v1.parallel?(@v3).should be_false
+      end
     end
 
     it "should determine if zero vector" do
@@ -143,7 +158,6 @@ module Geom
     end
 
     describe "Return Types:" do
-
       it "should return as point" do
         Vector.new(@valid_attributes).to_point.should == Point.new(@valid_attributes)
       end
