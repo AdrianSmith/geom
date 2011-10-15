@@ -3,25 +3,27 @@ require 'geom/point'
 
 module Geom
   describe Point do
-    before do
-      @valid_attributes = [1.1, -2, 10]
+    describe "Construction" do
+      before do
+        @valid_attributes = [1.1, -2, 10]
+      end
+
+      it "should create a valid instance from an array of coordinates" do
+        point = Point.new(@valid_attributes)
+        point.x.should == @valid_attributes[0]
+        point.y.should == @valid_attributes[1]
+        point.z.should == @valid_attributes[2]
+      end
+
+      it "should create a valid instance from three numbers" do
+        point = Point.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
+        point.x.should == @valid_attributes[0]
+        point.y.should == @valid_attributes[1]
+        point.z.should == @valid_attributes[2]
+      end
     end
 
-    it "should create a valid instance from an array of coordinates" do
-      point = Point.new(@valid_attributes)
-      point.x.should == @valid_attributes[0]
-      point.y.should == @valid_attributes[1]
-      point.z.should == @valid_attributes[2]
-    end
-
-    it "should create a valid instance from three numbers" do
-      point = Point.new(@valid_attributes[0], @valid_attributes[1], @valid_attributes[2])
-      point.x.should == @valid_attributes[0]
-      point.y.should == @valid_attributes[1]
-      point.z.should == @valid_attributes[2]
-    end
-
-    describe "Arithmetic:" do
+    describe "Arithmetic" do
       before do
         @first_point = Point.new(0,0,0)
         @second_point = Point.new(1,2,3)
@@ -38,72 +40,90 @@ module Geom
       end
     end
 
-    describe "Return Types:" do
+    describe "Return Types" do
 
-      it "should return as vector" do
-        Point.new(@valid_attributes).to_vector.should == Vector.new(@valid_attributes)
+      describe "should calculate minimum distance" do
+        it "to another point" do
+          Point.new(0,0,0).distance_to_point(Point.new(1,3,2)).should == Math.sqrt(1*1 + 3*3 + 2*2)
+        end
+
+        it "to a plane when the point is remote from the plane" do
+          plane_1 = Plane.new(3, 2, 6, 6)
+          point_1 = Point.new(1, 1, 3)
+          point_1.distance_to_plane(plane_1).should be_within(0.001).of(-2.429)
+        end
+
+        it "to a plane when the point is on the plane" do
+          plane_2 = Plane.new(2, 3, 4, 20)
+          point_2 = Point.new(1, 2, 3)
+          point_2.distance_to_plane(plane_2).should be_within(0.001).of(0.0)
+        end
       end
 
-      it "should return as array" do
-        Point.new(@valid_attributes).to_ary.should == @valid_attributes
+      it "should calculated the average of an array of points" do
+        points = [Point.new(0,0,0), Point.new(1,1,1), Point.new(10,-10,2)]
+        average_point = Point.new(11/3.0, -9/3.0, 3/3.0)
+        Point.average(points).should == average_point
+      end
+
+      describe "should determine coincidence" do
+        before do
+          @p1 = Point.new(1,-1,0)
+          @p2 = Point.new(1,-1,0)
+          @p3 = Point.new(1.1,-1,0)
+        end
+
+        it "with another identical point" do
+          @p1.coincident?(@p2).should be_true
+        end
+
+        it "with a non-identical point" do
+          @p1.coincident?(@p3).should be_false
+        end
+
+        it "from an array of points and remove any coincident points" do
+          Point.remove_coincident([Point.new(1,-1,0), Point.new(1,-1,0), Point.new(1,-1,0), Point.new(1.1,-1,0)]).size.should == 2
+        end
+      end
+
+      describe "should determine if a point is between two points" do
+        before do
+          @p1 = Point.new(0,-1,0)
+          @p2 = Point.new(4,-1,0)
+          @p3 = Point.new(9,-1,0)
+        end
+        it "that bound the point" do
+          @p2.between?(@p1, @p3).should be_true
+        end
+
+        it "that do not bound the point" do
+          @p1.between?(@p2, @p3).should be_false
+        end
+      end
+
+      describe "should determine if point is on plane" do
+        before do
+          @plane = Plane.new(0, 0, 1, 1)
+          @point_1 = Point.new(0, 0, 1)
+          @point_2 = Point.new(0, 0, 2)
+          @point_3 = Point.new(0, 0, 1.0000000001)
+        end
+
+        it "when the point is on the plane" do
+          @point_1.on_plane?(@plane).should be_true
+        end
+
+        it "when the point is not on the plane" do
+          @point_2.on_plane?(@plane).should be_false
+        end
+
+        it "when the point is close but not on the plane" do
+          @point_3.on_plane?(@plane).should be_false
+        end
       end
     end
 
-    it "should calculated distance to another point" do
-      Point.new(0,0,0).distance_to_point(Point.new(1,3,2)).should == Math.sqrt(1*1 + 3*3 + 2*2)
-    end
-
-    it "should calculate minimum distance to a plane" do
-      plane_1 = Plane.new(3, 2, 6, 6)
-      point_1 = Point.new(1, 1, 3)
-      point_1.distance_to_plane(plane_1).should be_within(0.001).of(-2.429)
-
-      plane_2 = Plane.new(2, 3, 4, 20)
-      point_2 = Point.new(1, 2, 3)
-      point_2.distance_to_plane(plane_2).should be_within(0.001).of(0.0)
-    end
-
-    it "should calculated the average of an array of points" do
-      points = [Point.new(0,0,0), Point.new(1,1,1), Point.new(10,-10,2)]
-      average_point = Point.new(11/3.0, -9/3.0, 3/3.0)
-      Point.average(points).should == average_point
-    end
-
-    it "should determine if coincidence with another point" do
-      p1 = Point.new(1,-1,0)
-      p2 = Point.new(1,-1,0)
-      p3 = Point.new(1.1,-1,0)
-      p1.coincident?(p2).should be_true
-      p1.coincident?(p3).should be_false
-    end
-
-    it "should remove coincident points from an array of points" do
-      Point.remove_coincident([Point.new(1,-1,0), Point.new(1,-1,0), Point.new(1,-1,0), Point.new(1.1,-1,0)]).size.should == 2
-    end
-
-    it "should determine if point is between two other points" do
-      p1 = Point.new(0,-1,0)
-      p2 = Point.new(4,-1,0)
-      p3 = Point.new(9,-1,0)
-      p2.between?(p1, p3).should be_true
-      p1.between?(p2, p3).should be_false
-    end
-
-    it "should determine if an array of points is collinear" do
-    end
-
-    it "should determine if point is on plane" do
-      plane = Plane.new(0, 0, 1, 1)
-      point_1 = Point.new(0, 0, 1)
-      point_2 = Point.new(0, 0, 2)
-      point_3 = Point.new(0, 0, 1.0000000001)
-
-      point_1.on_plane?(plane).should be_true
-      point_2.on_plane?(plane).should be_false
-      point_3.on_plane?(plane).should be_false
-    end
-
-    describe "Projection:" do
+    describe "Projection" do
       it "should be projected normal (dropped) onto plane" do
         z_plane = Plane.new(0, 0, 1, 0)
         oblique_plane = Plane.new(-1, 1, 0, 0)
@@ -145,7 +165,7 @@ module Geom
       end
     end
 
-    describe "Translation:" do
+    describe "Translation" do
       it "should translate along a vector" do
         p = Point.new(1,0,0)
         v = Vector.new(1,0,0)
@@ -155,17 +175,11 @@ module Geom
       it "should translate along a vector a specified distance" do
         p = Point.new(0,0,1)
         v = Vector.new(0,1,0)
-
         p.translate(v, 10).should == Point.new(0,10,1)
       end
     end
 
     describe "Transformation:" do
     end
-
-    it "should return a summary string" do
-      Point.new(1,2,3).to_s.should == "Point(1.000,2.000,3.000)"
-    end
-
   end
 end
