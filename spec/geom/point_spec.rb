@@ -3,7 +3,7 @@ require 'geom/point'
 
 module Geom
   describe Point do
-    before(:each) do
+    before do
       @valid_attributes = [1.1, -2, 10]
     end
 

@@ -1,9 +1,9 @@
 module Geom
+  # Plane defined by the equation:Ax + By + Cz = D
   class Plane
-    # Plane defined by the equation:Ax + By + Cz = D
     attr_accessor :a, :b, :c, :d
 
-    def initialize *args
+    def initialize(*args)
 
       case args.size
       when 2 # Point and normal vector
@@ -35,13 +35,12 @@ module Geom
       self.normalize
     end
 
-    def == plane
+    def ==(plane)
       (@a - plane.a).abs < TOLERANCE &&
       (@b - plane.b).abs < TOLERANCE &&
       (@c - plane.c).abs < TOLERANCE &&
       (@d - plane.d).abs < TOLERANCE
     end
-
     alias_method :eql?, :==
 
     def hash
@@ -58,7 +57,7 @@ module Geom
 
     def normalize
       if (@a == 0 && @b == 0 && @c == 0)
-        raise ArgumentError.new("Plane definition error, points may be coincident or collinear")
+        raise ArgumentError, "Plane definition error, points may be coincident or collinear"
       else
         norm_factor = 1.0 / Math.sqrt((@a * @a + @b * @b + @c * @c))
         @a *= norm_factor

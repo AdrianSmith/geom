@@ -12,32 +12,25 @@ module Geom
       @rcs = RectangularCoordinateSystem.new
     end
 
-    it "should construct a RCS using x-vector and xy-plane" do
-      RectangularCoordinateSystem.create_xvector_yvector(@origin, @ivector, @jvector).should == @rcs
+    it "should construct a RCS using x-vector and xy-plane normal vector" do
+      RectangularCoordinateSystem.new_from_xvector_and_xyplane(@origin, @ivector, @jvector).should == @rcs
+    end
+
+    it "should construct a RCS using y-vector and yz-plane normal vector" do
+      RectangularCoordinateSystem.new_from_yvector_and_yzplane(@origin, @jvector, @ivector).should == @rcs
+    end
+
+    it "should construct a RCS using z-vector and zx-plane normal vector" do
+      RectangularCoordinateSystem.new_from_zvector_and_zxplane(@origin, @kvector, @jvector).should == @rcs
     end
 
     it "should return a summary string" do
       RectangularCoordinateSystem.new.to_s.should == "RCS[Point(0.000,0.000,0.000) X-Vector(1.000,0.000,0.000) Y-Vector(0.000,1.000,0.000) Z-Vector(0.000,0.000,1.000)]"
     end
+
   end
 end
 
-#
-#
-#     private Point o1, x1, xy1, o2, x2, xy2;
-# private CoordinateSystems.CoordinateSystemRectangular cs1, cs2, trans, rcs;
-#
-# [Test]
-# public void ConstrGeneric()
-# {
-#
-#
-#     CoordinateSystemRectangular C1, C2, C3, C4, C5, C6;
-#     //XVectorXYPlane
-#     C1 = new CoordinateSystemRectangular(origin, iVector, jVector, CoordinateSystemRectangular.DefinitionMethod.XVectorXYPlane);
-#     //XVectorZXPlane
-#     C2 = new CoordinateSystemRectangular(origin, iVector, kVector, CoordinateSystemRectangular.DefinitionMethod.XVectorZXPlane);
-#     //YVectorXYPlane
 #     C3 = new CoordinateSystemRectangular(origin, jVector, iVector, CoordinateSystemRectangular.DefinitionMethod.YVectorXYPlane);
 #     //YVectorYZPlane
 #     C4 = new CoordinateSystemRectangular(origin, jVector, kVector, CoordinateSystemRectangular.DefinitionMethod.YVectorYZPlane);

@@ -1,8 +1,9 @@
 module Geom
+  # Vector defined by coordinates x, y, z
   class Vector
     attr_accessor :x, :y, :z
 
-    def initialize *args
+    def initialize(*args)
       if args.size == 2
         @x = args[1].x.to_f - args[0].x.to_f
         @y = args[1].y.to_f - args[0].y.to_f
@@ -12,19 +13,19 @@ module Geom
       end
     end
 
-    def - vector
+    def -(vector)
       Vector.new(@x - vector.x, @y - vector.y, @z - vector.z)
     end
 
-    def + vector
+    def +(vector)
       Vector.new(@x + vector.x, @y + vector.y, @z + vector.z)
     end
 
-    def * scale
+    def *(scale)
       Vector.new(@x * scale, @y * scale, @z * scale)
     end
 
-    def == vector
+    def ==(vector)
       (@x - vector.x).abs < TOLERANCE &&
       (@y - vector.y).abs < TOLERANCE &&
       (@z - vector.z).abs < TOLERANCE
@@ -38,19 +39,19 @@ module Geom
 
     alias_method :scale, :*
 
-    def ** power
+    def **(power)
       Vector.new(@x ** power, @y ** power, @z ** power)
     end
 
-    def / scale
+    def /(scale)
       self * (1.0/scale)
     end
 
-    def dot vector
+    def dot(vector)
       @x * vector.x + @y * vector.y + @z * vector.z
     end
 
-    def cross vector
+    def cross(vector)
       Vector.new(@y * vector.z - @z * vector.y,
       @z * vector.x - @x * vector.z,
       @x * vector.y - @y * vector.x)
@@ -111,56 +112,48 @@ module Geom
       end
     end
 
-    def same_direction? vector
+    # If dot product > 0, angle is acute and vectors are the same direction
+    # If dot product < 0, angle is obtuse and vectors are in opposite direction
+    # If dot product = 0, vectors are orthogonal, including if one is zero vector (taken as same direction)
+    def same_direction?(vector)
       dotp = self.dot(vector);
-      # If dot product > 0, angle is acute and vectors are the same direction
-      # If dot product < 0, angle is obtuse and vectors are in opposite direction
-      # If dot product = 0, vectors are orthogonal, including if one is zero vector (taken as same direction)
-      if (dotp < 0)
-        false
-      else
-        true
-      end
+      dotp > 0
     end
 
     def parallel?(vector)
       angle = self.angle_between(vector)
-      ((angle - Math::PI).abs < TOLERANCE) || (angle.abs < TOLERANCE) ? true : false
+      ((angle - Math::PI).abs < TOLERANCE) || (angle.abs < TOLERANCE)
     end
 
     def zero?
-      if self.length <= 0.0
-        true
-      else
-        false
-      end
+      self.length <= 0.0
     end
 
-      def self.average(vectors)
-        num = vectors.size.to_f
-        Vector.sum(vectors).scale(1/num)
-      end
+    def self.average(vectors)
+      num = vectors.size.to_f
+      Vector.sum(vectors).scale(1/num)
+    end
 
-      def self.sum(vectors)
-        tx, ty, tz = 0, 0, 0
-        vectors.each do |vector|
-          tx += vector.x
-          ty += vector.y
-          tz += vector.z
-        end
-        Vector.new(tx, ty, tz)
+    def self.sum(vectors)
+      tx, ty, tz = 0, 0, 0
+      vectors.each do |vector|
+        tx += vector.x
+        ty += vector.y
+        tz += vector.z
       end
+      Vector.new(tx, ty, tz)
+    end
 
-      def to_point
-        Point.new(@x,@y,@z)
-      end
+    def to_point
+      Point.new(@x,@y,@z)
+    end
 
-      def to_s
-        "Vector(%.3f,%.3f,%.3f)" % [@x, @y, @z]
-      end
+    def to_s
+      "Vector(%.3f,%.3f,%.3f)" % [@x, @y, @z]
+    end
 
-      def to_ary
-        [@x, @y, @z]
-      end
+    def to_ary
+      [@x, @y, @z]
     end
   end
+end

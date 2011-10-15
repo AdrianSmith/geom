@@ -1,9 +1,9 @@
 module Geom
+  # Line defined by parametric equations X = X0 + XAt, Y = Y0 + YAt, ,Z = Z0 + ZAt
   class Line
-    # Line defined by parametric equations X = X0 + XAt, Y = Y0 + YAt, ,Z = Z0 + ZAt
     attr_accessor :x0, :xa, :y0, :ya, :z0, :za
 
-    def initialize *args
+    def initialize(*args)
 
       case args.size
       when 2 # Start point and End point
@@ -24,7 +24,7 @@ module Geom
       end
     end
 
-    def == line
+    def ==(line)
       (@x0 - line.x0).abs < TOLERANCE &&
       (@y0 - line.y0).abs < TOLERANCE &&
       (@z0 - line.z0).abs < TOLERANCE &&
@@ -111,7 +111,7 @@ module Geom
     end
 
     def on_plane?(plane)
-      (self.point_at_parameter(0).on_plane?(plane) && self.point_at_parameter(1).on_plane?(plane)) ? true : false
+      self.point_at_parameter(0).on_plane?(plane) && self.point_at_parameter(1).on_plane?(plane)
     end
 
     def to_s

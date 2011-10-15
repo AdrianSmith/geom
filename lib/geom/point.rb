@@ -1,25 +1,25 @@
 module Geom
+  # Point defined by coordinates x, y, z
   class Point
     attr_accessor :x, :y, :z
 
-    def initialize *args
+    def initialize(*args)
       @x, @y, @z = args.flatten
     end
 
-    def - point
+    def -(point)
       Point.new(@x - point.x, @y - point.y, @z - point.z)
     end
 
-    def + point
+    def +(point)
       Point.new(@x + point.x, @y + point.y, @z + point.z)
     end
 
-    def == point
+    def ==(point)
       (@x - point.x).abs < TOLERANCE &&
       (@y - point.y).abs < TOLERANCE &&
       (@z - point.z).abs < TOLERANCE
     end
-
     alias_method :eql?, :==
     alias_method :coincident?, :==
 
@@ -93,20 +93,20 @@ module Geom
       distance_T2 = second_point.distance_to_point(projected_point)
 
       if include_ends
-        ((distance_T1 < distance_12) && (distance_T2 < distance_12)) ? true : false
+        (distance_T1 < distance_12) && (distance_T2 < distance_12)
       else
-        ((distance_T1 <= distance_12) && (distance_T2 <= distance_12)) ? true : false
+        (distance_T1 <= distance_12) && (distance_T2 <= distance_12)
       end
     end
 
     def on_plane?(plane)
       projected_point = self.project_onto_plane(plane)
-      projected_point.distance_to_point(self).abs <= TOLERANCE ? true : false
+      projected_point.distance_to_point(self).abs <= TOLERANCE
     end
 
     def on_line?(line)
       projected_point = self.project_onto_line(line)
-      self.Distance(projected_point) <= Tolerance ? true : false
+      self.Distance(projected_point) <= Tolerance
     end
 
     def self.remove_coincident(points)
