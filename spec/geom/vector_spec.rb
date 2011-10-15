@@ -3,7 +3,7 @@ require 'geom/vector'
 
 module Geom
   describe Vector do
-    before(:each) do
+    before do
       @valid_attributes = [1.1, -2, 10]
     end
 
@@ -29,7 +29,7 @@ module Geom
     end
 
     describe "Arithmetic:" do
-      before(:each) do
+      before do
         @first_vector  = Vector.new(0,0,0)
         @second_vector = Vector.new(1,2,3)
       end

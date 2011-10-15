@@ -22,7 +22,7 @@ module Geom
     end
 
     describe "Arithmetic:" do
-      before(:each) do
+      before do
         @first_point = Point.new(0,0,0)
         @second_point = Point.new(1,2,3)
       end

@@ -3,7 +3,7 @@ require 'geom/plane'
 
 module Geom
   describe Plane do
-    before(:each) do
+    before do
       @valid_attributes = [-10, 10, 0, 4]
     end
 

@@ -4,7 +4,7 @@ require 'geom/rectangular_coordinate_system'
 module Geom
   describe RectangularCoordinateSystem do
 
-    before(:each) do
+    before do
       @origin  = Point.new(0,0,0)
       @ivector = Vector.new(1,0,0)
       @jvector = Vector.new(0,1,0)

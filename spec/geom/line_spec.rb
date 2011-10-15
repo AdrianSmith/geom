@@ -3,50 +3,35 @@ require 'geom/line'
 
 module Geom
   describe Line do
-    before(:each) do
-      @valid_attributes = [1, 2, 3, 4, 5, 6]
+    describe "Construction" do
+      before do
+        @valid_attributes = [1, 2, 3, 4, 5, 6]
+        @attributes = [:x0, :xa, :y0, :ya, :z0, :za]
+      end
+
+      it "should create a valid instance from an array of parameters" do
+        line = Line.new(@valid_attributes)
+        @attributes.each_with_index{|value, index| line.send(value).should == @valid_attributes[index] }
+      end
+
+      it "should create a valid instance from two points" do
+        line = Line.new(Point.new(1, 3, 5), Point.new(3, 7, 11))
+        @attributes.each_with_index{|value, index| line.send(value).should == @valid_attributes[index] }
+      end
     end
 
-    it "should create a valid instance from an array of parameters" do
-      line = Line.new(@valid_attributes)
-      line.x0.should == 1
-      line.xa.should == 2
-      line.y0.should == 3
-      line.ya.should == 4
-      line.z0.should == 5
-      line.za.should == 6
+    describe "Equality" do
+      it "should determine equality with another line" do
+        line_1 = Line.new(Point.new(0, 0, 0), Point.new(2, 2, 2))
+        line_2 = Line.new(Point.new(0, 0, 0), Point.new(2, 2, 2))
+        line_1.should == line_2
+      end
     end
 
-    it "should create a valid instance from two points" do
-      line = Line.new(Point.new(0, 0, 0), Point.new(2, 2, 2))
-      line.x0.should == 0
-      line.xa.should == 2
-      line.y0.should == 0
-      line.ya.should == 2
-      line.z0.should == 0
-      line.za.should == 2
-    end
-
-    it "should determine if another line is equal" do
-      line_1 = Line.new(Point.new(0, 0, 0), Point.new(2, 2, 2))
-      line_2 = Line.new(Point.new(0, 0, 0), Point.new(2, 2, 2))
-      line_1.should == line_2
-    end
-
-    it "should determine if line is on plane" do
-      # Line on plane
-      plane = Plane.new(0, 0, 1, 0)
-
-      line_1 = Line.new(Point.new(1, 1, 0), Point.new(2, -3, 0))
-      line_1.on_plane?(plane).should be_true
-
-      # Line parallel to plane
-      line_2 = Line.new(Point.new(1, 1, 1), Point.new(2, -3, 1))
-      line_2.on_plane?(plane).should be_false
-
-      # Line intersects plane
-      line_3 = Line.new(Point.new(1, 1, 0), Point.new(2, -3, 1))
-      line_3.on_plane?(plane).should be_false
+    describe "Return types" do
+      it "should return a summary string" do
+        Line.new(1,2,3,1,0,0).to_s.should == "Line(1.000,2.000,3.000,1.000,0.000,0.000)"
+      end
     end
 
     describe "Intersection" do
@@ -88,11 +73,25 @@ module Geom
         line = Line.new(Point.new(2, 2, 10), Point.new(2, 2, 20))
         line.intersection_with_plane(plane).should == Point.new(2, 2, 0)
       end
-    end
 
-    it "should return a summary string" do
-      Line.new(1,2,3,1,0,0).to_s.should == "Line(1.000,2.000,3.000,1.000,0.000,0.000)"
-    end
+      describe "should determine if a line is on a plane" do
+        before do
+          @plane = Plane.new(0, 0, 1, 0)
+        end
+        it "when a line is on a plane" do
+          line_1 = Line.new(Point.new(1, 1, 0), Point.new(2, -3, 0))
+          line_1.on_plane?(@plane).should be_true
+        end
 
+        it "when a line is parallel to a plane" do
+          line_2 = Line.new(Point.new(1, 1, 1), Point.new(2, -3, 1))
+          line_2.on_plane?(@plane).should be_false
+        end
+        it "when a line intersects plane" do
+          line_3 = Line.new(Point.new(1, 1, 0), Point.new(2, -3, 1))
+          line_3.on_plane?(@plane).should be_false
+        end
+      end
+    end
   end
 end
