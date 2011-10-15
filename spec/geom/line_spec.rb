@@ -62,6 +62,7 @@ module Geom
         start_point = Point.new(0, 0, 0)
         end_point   = Point.new(1, 1, 0)
         mid_point   = Point.new(0.5, 0.5, 0)
+
         line = Line.new(start_point, end_point)
         line.parameter_at_point(start_point).should == 0
         line.parameter_at_point(end_point).should == 1
