@@ -46,6 +46,10 @@ module Geom
       it "should return a summary string" do
         Plane.new(1,2,3,1).to_s.should == "Plane(0.267,0.535,0.802,0.267)"
       end
+
+      it "should return a hash code" do
+        Plane.new(1,2.88,2,-45.111).hash.should == -12
+      end
     end
   end
 end

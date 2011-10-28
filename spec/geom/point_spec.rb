@@ -52,6 +52,10 @@ module Geom
       it "should return a summary string" do
         Point.new(@valid_attributes).to_s.should == "Point(1.100,-2.000,10.000)"
       end
+
+      it "should return a hash code" do
+        Point.new(1,2.88,-45.111).hash.should == -48
+      end
     end
 
     describe "should calculate minimum distance" do

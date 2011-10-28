@@ -36,7 +36,7 @@ module Geom
     alias_method :eql?, :==
 
     def hash
-      @a.to_int ^ @b.to_int ^ @c.to_int ^ @d.to_int
+      (@x0.to_int ^ @y0.to_int ^ @z0.to_int ^ @xa.to_int ^ @ya.to_int ^ @za.to_int)
     end
 
     def direction
@@ -91,10 +91,6 @@ module Geom
       if (dist < TOLERANCE)
         p1
       else
-        puts line.to_s
-        puts self.to_s
-        puts p1.to_s
-        puts p2.to_s
         raise ArgumentError.new("Lines do not intersect")
       end
     end

@@ -1,3 +1,5 @@
+require 'matrix'
+
 module Geom
   class RectangularCoordinateSystem
     attr_accessor :origin, :x_vector, :y_vector, :z_vector
@@ -41,10 +43,10 @@ module Geom
 
     def transformation_matrix
       Matrix[
-        [@x_vector.x, @x_vector.Y, @x_vector.Z, 0],
-        [@y_vector.x, @y_vector.Y, @y_vector.Z, 0],
-        [@z_vector.x, @z_vector.Y, @z_vector.Z, 0],
-        [@origin.x, @origin.Y, @origin.Z, 1]
+        [@x_vector.x, @x_vector.y, @x_vector.z, 0],
+        [@y_vector.x, @y_vector.y, @y_vector.z, 0],
+        [@z_vector.x, @z_vector.y, @z_vector.z, 0],
+        [@origin.x, @origin.y, @origin.z, 1]
       ]
     end
 
@@ -62,7 +64,7 @@ module Geom
     alias_method :eql?, :==
 
     def hash
-      @x_vector.hash ^ @y_vector.hash ^ @z_vector.hash ^ @origin.hash
+      (@x_vector.hash ^ @y_vector.hash ^ @z_vector.hash ^ @origin.hash)
     end
   end
 end

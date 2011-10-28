@@ -168,6 +168,10 @@ module Geom
       it "should return a summary string" do
         Vector.new(1,2,3).to_s.should == "Vector(1.000,2.000,3.000)"
       end
+
+      it "should return a hash code" do
+        Vector.new(1,2.88,-45.111).hash.should == -48
+      end
     end
 
     describe "Translation" do

@@ -24,7 +24,7 @@ module Geom
     alias_method :coincident?, :==
 
     def hash
-      @x.to_int ^ @y.to_int ^ @z.to_int
+      (@x.to_int ^ @y.to_int ^ @z.to_int)
     end
 
     def distance_to_point(point)

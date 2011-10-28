@@ -32,6 +32,10 @@ module Geom
       it "should return a summary string" do
         Line.new(1,2,3,1,0,0).to_s.should == "Line(1.000,2.000,3.000,1.000,0.000,0.000)"
       end
+
+      it "should return a hash code" do
+        Line.new(1,2.88,3,1,-45.111,101).hash.should == -73
+      end
     end
 
     describe "Intersection" do
@@ -41,12 +45,26 @@ module Geom
         line_1.intersection_with_line(line_2).should == Point.new(8, 8, 0)
       end
 
-      it "should raise exception when does not intersection with another line" do
+      it "should raise exception when lines are parallel" do
         line_1 = Line.new(1, 1, 3, -1, 0, 2)
         line_2 = Line.new(1, 2, 3, -2, 0, 4)
-        expect{line_1.intersection_with_line(line_2)}.to raise_exception
+        lambda {line_1.intersection_with_line(line_2)}.should raise_error(ArgumentError, "Lines are parallel")
       end
 
+      it "should raise exception when lines are skew" do
+        line_1 = Line.new(1, 1, 3, -1, 0, 2)
+        line_2 = Line.new(1, 2, 3, -2.5, 0.3, 4)
+        lambda {line_1.intersection_with_line(line_2)}.should raise_error(ArgumentError, "Lines do not intersect")
+      end
+
+      it "should calculation intersection with a plane" do
+        plane = Plane.new(Point.new(0, 0, 0), Vector.new(0, 0, 1))
+        line = Line.new(Point.new(2, 2, 10), Point.new(2, 2, 20))
+        line.intersection_with_plane(plane).should == Point.new(2, 2, 0)
+      end
+    end
+
+    describe "Parameters" do
       it "should calculate closest approach parameter" do
         line_1 = Line.new(Point.new(0, 0, 0), Point.new(1, 1, 0))
         line_2 = Line.new(Point.new(0.5, -0.5, 0), Point.new(0.5, -0.1, 0))
@@ -58,21 +76,30 @@ module Geom
         line.point_at_parameter(5).should == Point.new(6, -2, 10)
       end
 
-      it "should calculate parameter at point" do
-        start_point = Point.new(0, 0, 0)
-        end_point   = Point.new(1, 1, 0)
-        mid_point   = Point.new(0.5, 0.5, 0)
+      describe "should calculate parameter" do
+        before do
+          @start_point = Point.new(-1, -1, -1)
+          @end_point   = Point.new(1, 1, 1)
+          @mid_point   = Point.new(0, 0, 0)
+          @line = Line.new(@start_point, @end_point)
+        end
 
-        line = Line.new(start_point, end_point)
-        line.parameter_at_point(start_point).should == 0
-        line.parameter_at_point(end_point).should == 1
-        line.parameter_at_point(mid_point).should == 0.5
-      end
+        it "at start point" do
+          @line.parameter_at_point(@start_point).should == 0
+        end
 
-      it "should calculation intersection with a plane" do
-        plane = Plane.new(Point.new(0, 0, 0), Vector.new(0, 0, 1))
-        line = Line.new(Point.new(2, 2, 10), Point.new(2, 2, 20))
-        line.intersection_with_plane(plane).should == Point.new(2, 2, 0)
+        it "at end point" do
+          @line.parameter_at_point(@end_point).should == 1
+        end
+
+        it "at mid point" do
+          @line.parameter_at_point(@mid_point).should == 0.5
+        end
+
+        it "at point beyond end point" do
+          @line.parameter_at_point(Point.new(10,10,10)).should == 5.5
+        end
+
       end
 
       describe "should determine if a line is on a plane" do

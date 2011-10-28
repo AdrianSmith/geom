@@ -44,7 +44,7 @@ module Geom
     alias_method :eql?, :==
 
     def hash
-      @a.to_int ^ @b.to_int ^ @c.to_int ^ @d.to_int
+      (@a.to_int ^ @b.to_int ^ @c.to_int ^ @d.to_int)
     end
 
     def normal
