@@ -12,9 +12,8 @@ module Geom
 
     ROTATION = 1
     TRANSLATION = 2
-    ISOMETRIC = 4
-    REFLECTION = 8
-    SCALING = 16
+    SCALING = 4
+    SHEARING = 8
 
     def initialize(source_coordinate_system, target_coordinate_system)
       source = target_coordinate_system.transformation_matrix
@@ -22,49 +21,53 @@ module Geom
 
       @matrix = target.inverse * source
       @translation_vector = Vector.new(source_coordinate_system.origin, target_coordinate_system.origin)
+      @type = 0 # initialize as integer not boolean
 
-      @type |= ROTATION if self.identity?
-      @type |= TRANSLATION if @translation_vector.zero?
+      @type |= ROTATION if self.rotation_submatrix_orthogonal? && !rotation_submatrix_identity?
+      @type |= TRANSLATION unless self.translation_vector.zero?
+      @type |= SCALING unless self.scale_vector.unitity?
+      @type |= SHEARING unless self.rotation_submatrix_diagonal?
 
-      if self.transformation_orthogonal_matrix? && self.rotation_submatrix_diagonal?
-        @type |= SCALING
-        @type |= ISOMETRIC
-      elsif self.transformation_orthogonal_matrix?
-        @type |= ROTATION
-        @type |= ISOMETRIC
-      elsif self.rotation_submatrix_diagonal?
-        @type |= SCALING
-      else
-        raise ArgumentError, "Transformation is non-linear"
-      end
+      raise ArgumentError, "Transformation is non-linear" unless self.rotation_submatrix_orthogonal? or self.rotation_submatrix_diagonal
     end
 
-    def transformation_orthogonal_matrix?
-      @matrix * @matrix == Matrix.identity(4)
+    def type_description
+      names = ["Type #{@type}"]
+      names << 'Scaling' if self.scaling?
+      names << 'Translation' if self.translation?
+      names << 'Rotation' if self.rotation?
+      names << 'Shearing' if self.shearing?
+      names.to_s
+    end
+
+    def rotation_submatrix
+      @matrix.minor(0..2,0..2)
+    end
+
+    def rotation_submatrix_orthogonal?
+      self.rotation_submatrix.transpose == self.rotation_submatrix.inverse
     end
 
     def rotation_submatrix_diagonal?
-      @matrix[1,0] == 0 && @matrix[2,0] == 0 && @matrix[2,1] == 0
+      @matrix[1,0] == 0 && @matrix[2,0] == 0 && @matrix[2,1] == 0 &&
+      @matrix[0,1] == 0 && @matrix[0,2] == 0 && @matrix[1,2] == 0 &&
+      @matrix[0,0].abs > TOLERANCE && @matrix[1,1].abs > TOLERANCE && @matrix[2,2].abs > TOLERANCE
     end
 
     def identity?
       @matrix == Matrix.identity(4)
     end
 
-    def isometric?
-      ISOMETRIC & self.type > 0
+    def rotation_submatrix_identity?
+      self.rotation_submatrix == Matrix.identity(3)
     end
 
     def scaling?
       SCALING & self.type > 0
     end
 
-    def reflection?
-      REFLECTION & self.type > 0
-    end
-
-    def transformation?
-      TRANSFORMATION & self.type > 0
+    def shearing?
+      SHEARING & self.type > 0
     end
 
     def translation?
@@ -75,12 +78,8 @@ module Geom
       ROTATION & self.type > 0
     end
 
-    def scale
-      if self.scaling?
-        @matrix[0]
-      else
-        raise ArgumentError, "Transformation does not scale"
-      end
+    def scale_vector
+      Vector.new(@matrix[0,0], @matrix[1,1], @matrix[2,2])
     end
 
     def rotation_angle
@@ -96,6 +95,10 @@ module Geom
 
       @matrix.rotation_angle
       Vector.new(axis[0], axis[1], axis[2])
+    end
+
+    def to_s
+      "Transform #{@matrix.to_s}"
     end
 
   end

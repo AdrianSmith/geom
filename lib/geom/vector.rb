@@ -129,6 +129,10 @@ module Geom
       self.length <= 0.0
     end
 
+    def unitity?
+      self.x == 1.0 && self.x == 1.0 && self.z == 1.0
+    end
+
     def self.average(vectors)
       num = vectors.size.to_f
       Vector.sum(vectors).scale(1/num)
