@@ -14,7 +14,7 @@ module Geom
       end
 
       it "should construct a RCS using x-vector and xy-plane normal vector" do
-        RectangularCoordinateSystem.new_from_xvector_and_xyplane(@origin, @ivector, @jvector).should == @rcs
+        RectangularCoordinateSystem.new_from_xvector_and_xyplane(@origin, @ivector, @kvector).should == @rcs
       end
 
       it "should construct a RCS using y-vector and yz-plane normal vector" do

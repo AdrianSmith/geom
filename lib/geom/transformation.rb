@@ -15,18 +15,15 @@ module Geom
     SCALING = 4
     SHEARING = 8
 
-    def initialize(source_coordinate_system, target_coordinate_system)
-      source = target_coordinate_system.transformation_matrix
-      target = source_coordinate_system.transformation_matrix
-
-      @matrix = target.inverse * source
-      @translation_vector = Vector.new(source_coordinate_system.origin, target_coordinate_system.origin)
+    def initialize(coordinate_system)
+      @matrix = coordinate_system.transformation_matrix * 1.0 # ensure initialization as float not integer
+      @translation_vector = Vector.new(Point.new(0.0, 0.0, 0.0), coordinate_system.origin)
       @type = 0 # initialize as integer not boolean
 
       @type |= ROTATION if self.rotation_submatrix_orthogonal? && !rotation_submatrix_identity?
       @type |= TRANSLATION unless self.translation_vector.zero?
-      @type |= SCALING unless self.scale_vector.unitity?
-      @type |= SHEARING unless self.rotation_submatrix_diagonal?
+      # @type |= SCALING unless self.scale_vector.unitity?
+      # @type |= SHEARING unless self.rotation_submatrix_diagonal?
 
       raise ArgumentError, "Transformation is non-linear" unless self.rotation_submatrix_orthogonal? or self.rotation_submatrix_diagonal
     end
@@ -49,33 +46,35 @@ module Geom
     end
 
     def rotation_submatrix_diagonal?
-      @matrix[1,0] == 0 && @matrix[2,0] == 0 && @matrix[2,1] == 0 &&
-      @matrix[0,1] == 0 && @matrix[0,2] == 0 && @matrix[1,2] == 0 &&
+      @matrix[1,0] == 0.0 && @matrix[2,0] == 0.0 && @matrix[2,1] == 0.0 &&
+      @matrix[0,1] == 0.0 && @matrix[0,2] == 0.0 && @matrix[1,2] == 0.0 &&
       @matrix[0,0].abs > TOLERANCE && @matrix[1,1].abs > TOLERANCE && @matrix[2,2].abs > TOLERANCE
     end
 
     def identity?
-      @matrix == Matrix.identity(4)
+      @matrix == Matrix.identity(4) * 1.0
     end
 
     def rotation_submatrix_identity?
-      self.rotation_submatrix == Matrix.identity(3)
+      self.rotation_submatrix == Matrix.identity(3) * 1.0
     end
 
     def scaling?
-      SCALING & self.type > 0
+      raise NotImplementedError
+      # SCALING & self.type > 0.0
     end
 
     def shearing?
-      SHEARING & self.type > 0
+      raise NotImplementedError
+      # SHEARING & self.type > 0.0
     end
 
     def translation?
-      TRANSLATION & self.type > 0
+      TRANSLATION & self.type > 0.0
     end
 
     def rotation?
-      ROTATION & self.type > 0
+      ROTATION & self.type > 0.0
     end
 
     def scale_vector
@@ -83,23 +82,27 @@ module Geom
     end
 
     def rotation_angle
-      trace = self.matrix[0] + self.matrix[5] + self.matrix[10]
-      cos = 0.5 * (trace - 1)
-      Math.cos(cos)
+      trace = self.matrix[0,0] + self.matrix[1,1] + self.matrix[2,2]
+      angle = 0.5 * (trace - 1)
+      Math::acos(angle)
     end
 
     def rotation_axis
-      axis = []
-      angle = 0
-      Vector.new(self.matrix[])
-
-      @matrix.rotation_angle
-      Vector.new(axis[0], axis[1], axis[2])
+      raise NotImplementedError
     end
 
-    def to_s
-      "Transform #{@matrix.to_s}"
+    def to_s(pretty=false)
+      unless pretty
+        "Transform #{@matrix.to_s}"
+      else
+        str = "Transform\n"
+        str += "    Vx    |     Vy    |     Vz    |      T\n"
+        str += sprintf("%9.2e | %9.2e | %9.2e | %9.2e\n", @matrix[0,0], @matrix[0,1], @matrix[0,2], @matrix[0,3])
+        str += sprintf("%9.2e | %9.2e | %9.2e | %9.2e\n", @matrix[1,0], @matrix[1,1], @matrix[1,2], @matrix[1,3])
+        str += sprintf("%9.2e | %9.2e | %9.2e | %9.2e\n", @matrix[2,0], @matrix[2,1], @matrix[2,2], @matrix[2,3])
+        str += sprintf("%9.2e | %9.2e | %9.2e | %9.2e",   @matrix[3,0], @matrix[3,1], @matrix[3,2], @matrix[3,3])
+        str
+      end
     end
-
   end
 end
