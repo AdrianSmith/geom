@@ -177,6 +177,7 @@ module Geom
         point = Point.new(0, 1, 0)
         direction = Vector.new(1, -1, 0)
         point.project_onto_line_along_vector(line, direction).should == Point.new(1, 0, 0)
+        point.should == Point.new(0, 1, 0)
       end
     end
 
@@ -185,12 +186,14 @@ module Geom
         p = Point.new(1,0,0)
         v = Vector.new(1,0,0)
         p.translate(v).should == Point.new(2,0,0)
+        p.should == Point.new(1,0,0)
       end
 
       it "should translate along a vector a specified distance" do
         p = Point.new(0,0,1)
         v = Vector.new(0,1,0)
         p.translate(v, 10).should == Point.new(0,10,1)
+        p.should == Point.new(0,0,1)
       end
     end
 
@@ -203,6 +206,7 @@ module Geom
         vz = Vector.new(0,0,1)
         rcs = RectangularCoordinateSystem.new_from_xvector_and_xyplane(p2, vy, vz)
         p1.transform(rcs).should == Point.new(-3,3,0)
+        p1.should == Point.new(2,2,0)
       end
     end
   end

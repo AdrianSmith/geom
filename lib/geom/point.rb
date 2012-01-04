@@ -45,7 +45,7 @@ module Geom
 
     def translate(direction, distance=1)
       transation_vector = direction.unitize.scale distance
-      Point.new(@x += transation_vector.x, @y += transation_vector.y, @z += transation_vector.z)
+      Point.new(@x + transation_vector.x, @y + transation_vector.y, @z + transation_vector.z)
     end
 
     def transform(rectangular_coordinate_system)

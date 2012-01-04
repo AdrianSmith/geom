@@ -78,9 +78,9 @@ module Geom
 
     def to_s(verbose=false)
       unless verbose
-        "Transform #{@matrix.to_s}"
+        "Transformation #{@matrix.to_s}"
       else
-        str = "Transform\n"
+        str = "Transformation\n"
         str += "    Vx    |     Vy    |     Vz    |      T\n"
         str += sprintf("%9.2e | %9.2e | %9.2e | %9.2e\n", @matrix[0,0], @matrix[0,1], @matrix[0,2], @matrix[0,3])
         str += sprintf("%9.2e | %9.2e | %9.2e | %9.2e\n", @matrix[1,0], @matrix[1,1], @matrix[1,2], @matrix[1,3])
