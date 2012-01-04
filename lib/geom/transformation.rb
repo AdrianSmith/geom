@@ -10,8 +10,8 @@ module Geom
   class Transformation
     attr_accessor :type, :matrix, :translation_vector
 
-    ROTATION = 1
-    TRANSLATION = 2
+    TRANSLATION = 1
+    ROTATION = 2
     SCALING = 4
 
     def initialize(coordinate_system)
@@ -28,10 +28,10 @@ module Geom
 
     def type_description
       names = ["Type #{@type}"]
-      names << 'Scaling' if self.scaling?
       names << 'Translation' if self.translation?
       names << 'Rotation' if self.rotation?
-      names.to_s
+      names << 'Scaling' if self.scaling?
+      names.join(' ')
     end
 
     def rotation_submatrix
@@ -76,8 +76,8 @@ module Geom
         )
     end
 
-    def to_s(pretty=false)
-      unless pretty
+    def to_s(verbose=false)
+      unless verbose
         "Transform #{@matrix.to_s}"
       else
         str = "Transform\n"

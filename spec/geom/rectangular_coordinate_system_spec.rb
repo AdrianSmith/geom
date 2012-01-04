@@ -30,13 +30,16 @@ module Geom
       it "should return a summary string" do
         RectangularCoordinateSystem.new.to_s.should == "RCS[Point(0.000,0.000,0.000) X-Vector(1.000,0.000,0.000) Y-Vector(0.000,1.000,0.000) Z-Vector(0.000,0.000,1.000)]"
       end
+      it "should print matrix formatted string" do
+        RectangularCoordinateSystem.new.to_s(true).should be
+      end
 
       it "should calculate a 4x4 transformation matrix" do
         RectangularCoordinateSystem.new.transformation_matrix.should ==  Matrix[
-          [1, 0, 0, 0],
-          [0, 1, 0, 0],
-          [0, 0, 1, 0],
-          [0, 0, 0, 1]
+          [1.0, 0.0, 0.0, 0.0],
+          [0.0, 1.0, 0.0, 0.0],
+          [0.0, 0.0, 1.0, 0.0],
+          [0.0, 0.0, 0.0, 1.0]
         ]
       end
     end

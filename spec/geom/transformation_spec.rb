@@ -27,7 +27,7 @@ module Geom
         transform.translation?.should be_true
         transform.rotation?.should be_false
         transform.scaling?.should be_false
-        transform.type.should == 2
+        transform.type.should == 1
       end
 
       it "should determine if transformation involved rotation" do
@@ -35,19 +35,22 @@ module Geom
         transform.translation?.should be_false
         transform.rotation?.should be_true
         transform.scaling?.should be_false
-        transform.type.should == 1
+        transform.type.should == 2
       end
     end
 
     describe "Return Types" do
       it "should print matrix formatted string" do
-        transform = Transformation.new(@rcs_1)
-        transform.to_s(true).should be
+        Transformation.new(@rcs_1).to_s(true).should be
+      end
+
+      it "should create a description" do
+        Transformation.new(@rcs_2).type_description.should == "Type 1 Translation"
+        Transformation.new(@rcs_3).type_description.should == "Type 2 Rotation"
       end
 
       it "should calculate translation vector" do
-        transform = Transformation.new(@rcs_2)
-        transform.translation_vector.should == Vector.new(10.0, 1.0, 1.0)
+        Transformation.new(@rcs_2).translation_vector.should == Vector.new(10.0, 1.0, 1.0)
       end
     end
 

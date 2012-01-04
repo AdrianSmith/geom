@@ -50,8 +50,8 @@ module Geom
       ]
     end
 
-    def to_s(pretty=false)
-      unless pretty
+    def to_s(verbose=false)
+      unless verbose
         "RCS[#{@origin.to_s} X-#{@x_vector.to_s} Y-#{@y_vector.to_s} Z-#{@z_vector.to_s}]"
       else
         str = "Rectangular Coordinate System\n"
