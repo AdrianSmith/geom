@@ -163,7 +163,7 @@ module Geom
       end
 
       it "should return as array" do
-        Vector.new(@valid_attributes).to_ary.should == @valid_attributes
+        Vector.new(@valid_attributes).to_a.should == @valid_attributes
       end
       it "should return a summary string" do
         Vector.new(1,2,3).to_s.should == "Vector(1.000,2.000,3.000)"
@@ -177,7 +177,16 @@ module Geom
     describe "Translation" do
     end
 
-    describe "Transformation" do
+    describe "Transformation:" do
+      it "should transform into a coordinate system" do
+        v1 = Vector.new(2,2,0)
+        p2 = Point.new(5,5,0)
+        vx = Vector.new(1,0,0)
+        vy = Vector.new(0,1,0)
+        vz = Vector.new(0,0,1)
+        rcs = RectangularCoordinateSystem.new_from_xvector_and_xyplane(p2, vy, vz)
+        v1.transform(rcs).should == Vector.new(-3,3,0)
+      end
     end
 
   end

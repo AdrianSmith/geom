@@ -46,7 +46,7 @@ module Geom
       end
 
       it "should return as array" do
-        Point.new(@valid_attributes).to_ary.should == @valid_attributes
+        Point.new(@valid_attributes).to_a.should == @valid_attributes
       end
 
       it "should return a summary string" do
@@ -195,6 +195,15 @@ module Geom
     end
 
     describe "Transformation:" do
+      it "should transform into a coordinate system" do
+        p1 = Point.new(2,2,0)
+        p2 = Point.new(5,5,0)
+        vx = Vector.new(1,0,0)
+        vy = Vector.new(0,1,0)
+        vz = Vector.new(0,0,1)
+        rcs = RectangularCoordinateSystem.new_from_xvector_and_xyplane(p2, vy, vz)
+        p1.transform(rcs).should == Point.new(-3,3,0)
+      end
     end
   end
 end

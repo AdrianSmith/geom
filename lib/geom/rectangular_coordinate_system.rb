@@ -1,5 +1,3 @@
-require 'matrix'
-
 module Geom
   class RectangularCoordinateSystem
     attr_accessor :origin, :x_vector, :y_vector, :z_vector

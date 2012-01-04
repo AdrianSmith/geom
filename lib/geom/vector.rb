@@ -112,6 +112,15 @@ module Geom
       end
     end
 
+
+    def transform(rectangular_coordinate_system)
+      m = Transformation.new(rectangular_coordinate_system).matrix
+      tx = m[0,0] * @x + m[0,1] * @y + m[0,2] * @z + m[0,3] * 1.0
+      ty = m[1,0] * @x + m[1,1] * @y + m[1,2] * @z + m[1,3] * 1.0
+      tz = m[2,0] * @x + m[2,1] * @y + m[2,2] * @z + m[2,3] * 1.0
+      Vector.new(tx, ty, tz)
+    end
+
     # If dot product > 0, angle is acute and vectors are the same direction
     # If dot product < 0, angle is obtuse and vectors are in opposite direction
     # If dot product = 0, vectors are orthogonal, including if one is zero vector (taken as same direction)
@@ -156,8 +165,9 @@ module Geom
       "Vector(%.3f,%.3f,%.3f)" % [@x, @y, @z]
     end
 
-    def to_ary
+    def to_a
       [@x, @y, @z]
     end
+
   end
 end

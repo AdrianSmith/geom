@@ -48,6 +48,14 @@ module Geom
       Point.new(@x += transation_vector.x, @y += transation_vector.y, @z += transation_vector.z)
     end
 
+    def transform(rectangular_coordinate_system)
+      m = Transformation.new(rectangular_coordinate_system).matrix
+      tx = m[0,0] * @x + m[0,1] * @y + m[0,2] * @z + m[0,3] * 1.0
+      ty = m[1,0] * @x + m[1,1] * @y + m[1,2] * @z + m[1,3] * 1.0
+      tz = m[2,0] * @x + m[2,1] * @y + m[2,2] * @z + m[2,3] * 1.0
+      Point.new(tx, ty, tz)
+    end
+
     def project_onto_line(line)
       l = line.xa * line.xa + line.ya * line.ya + line.za * line.za
       m = 2 * (line.x0 - self.x) * line.xa + 2 * (line.y0 - self.y) * line.ya + 2 * (line.z0 - self.z) * line.za
@@ -132,7 +140,7 @@ module Geom
       "Point(%.3f,%.3f,%.3f)" % [@x, @y, @z]
     end
 
-    def to_ary
+    def to_a
       [@x, @y, @z]
     end
 

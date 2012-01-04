@@ -1,5 +1,6 @@
 require 'geom/version'
 require 'geom/tolerance'
+require 'matrix'
 require 'geom/point'
 require 'geom/vector'
 require 'geom/plane'

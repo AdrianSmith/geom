@@ -15,7 +15,7 @@ module Geom
     SCALING = 4
 
     def initialize(coordinate_system)
-      @matrix = coordinate_system.transformation_matrix * 1.0 # ensure initialization as float not integer
+      @matrix = coordinate_system.transformation_matrix.inverse * 1.0 # ensure initialization as float not integer
       @translation_vector = Vector.new(Point.new(0.0, 0.0, 0.0), coordinate_system.origin)
       @type = 0 # initialize as integer not boolean
 
