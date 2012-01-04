@@ -26,6 +26,7 @@ module Geom
         transform = Transformation.new(@rcs_2)
         transform.translation?.should be_true
         transform.rotation?.should be_false
+        transform.scaling?.should be_false
         transform.type.should == 2
       end
 
@@ -33,8 +34,8 @@ module Geom
         transform = Transformation.new(@rcs_3)
         transform.translation?.should be_false
         transform.rotation?.should be_true
+        transform.scaling?.should be_false
         transform.type.should == 1
-
       end
     end
 
@@ -47,16 +48,6 @@ module Geom
       it "should calculate translation vector" do
         transform = Transformation.new(@rcs_2)
         transform.translation_vector.should == Vector.new(10.0, 1.0, 1.0)
-      end
-
-      it "should calculate rotation angle" do
-        transform = Transformation.new(@rcs_3)
-        transform.rotation_angle.should == Math::PI / 2
-      end
-
-      it "should calculate rotation axis" do
-        transform = Transformation.new(@rcs_3)
-        lambda { transform.rotation_axis }.should raise_error(NotImplementedError)
       end
     end
 

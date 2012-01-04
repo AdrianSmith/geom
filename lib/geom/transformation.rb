@@ -6,14 +6,13 @@ module Geom
   # rx3  ry3  rz3  tz
   #   0    0    0   1
   # Transformations are applied by using the * operator
-  # Available transformations include scaling, translation, reflection, rotation
+  # Available transformations include translation and rotation
   class Transformation
     attr_accessor :type, :matrix, :translation_vector
 
     ROTATION = 1
     TRANSLATION = 2
     SCALING = 4
-    SHEARING = 8
 
     def initialize(coordinate_system)
       @matrix = coordinate_system.transformation_matrix * 1.0 # ensure initialization as float not integer
@@ -22,8 +21,7 @@ module Geom
 
       @type |= ROTATION if self.rotation_submatrix_orthogonal? && !rotation_submatrix_identity?
       @type |= TRANSLATION unless self.translation_vector.zero?
-      # @type |= SCALING unless self.scale_vector.unitity?
-      # @type |= SHEARING unless self.rotation_submatrix_diagonal?
+      @type |= SCALING unless self.scale_vector.unitity?
 
       raise ArgumentError, "Transformation is non-linear" unless self.rotation_submatrix_orthogonal? or self.rotation_submatrix_diagonal
     end
@@ -33,7 +31,6 @@ module Geom
       names << 'Scaling' if self.scaling?
       names << 'Translation' if self.translation?
       names << 'Rotation' if self.rotation?
-      names << 'Shearing' if self.shearing?
       names.to_s
     end
 
@@ -60,13 +57,7 @@ module Geom
     end
 
     def scaling?
-      raise NotImplementedError
-      # SCALING & self.type > 0.0
-    end
-
-    def shearing?
-      raise NotImplementedError
-      # SHEARING & self.type > 0.0
+      SCALING & self.type > 0.0
     end
 
     def translation?
@@ -78,17 +69,11 @@ module Geom
     end
 
     def scale_vector
-      Vector.new(@matrix[0,0], @matrix[1,1], @matrix[2,2])
-    end
-
-    def rotation_angle
-      trace = self.matrix[0,0] + self.matrix[1,1] + self.matrix[2,2]
-      angle = 0.5 * (trace - 1)
-      Math::acos(angle)
-    end
-
-    def rotation_axis
-      raise NotImplementedError
+      Vector.new(
+        Math.sqrt(@matrix[0,0]*@matrix[0,0] + @matrix[0,1]*@matrix[0,1] + @matrix[0,2]*@matrix[0,2]),
+        Math.sqrt(@matrix[1,0]*@matrix[1,0] + @matrix[1,1]*@matrix[1,1] + @matrix[1,2]*@matrix[1,2]),
+        Math.sqrt(@matrix[2,0]*@matrix[2,0] + @matrix[2,1]*@matrix[2,1] + @matrix[2,2]*@matrix[2,2])
+        )
     end
 
     def to_s(pretty=false)
