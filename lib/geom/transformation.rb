@@ -23,7 +23,7 @@ module Geom
       @type |= TRANSLATION unless self.translation_vector.zero?
       @type |= SCALING unless self.scale_vector.unitity?
 
-      raise ArgumentError, "Transformation is non-linear" unless self.rotation_submatrix_orthogonal? or self.rotation_submatrix_diagonal
+      raise ArgumentError, "Transformation is non-linear" unless self.rotation_submatrix_orthogonal? or self.rotation_submatrix_diagonal?
     end
 
     def type_description
