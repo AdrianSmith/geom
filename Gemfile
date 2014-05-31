@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-# Specify your gem's dependencies in geom.gemspec
-gemspec
+ruby '2.1.2'
 
-gem 'rspec'
-gem 'shoulda'
-gem 'simplecov', :require => false
+group :test do
+  gem 'rspec'
+  gem 'simplecov', :require => false
+end
