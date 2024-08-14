@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-ruby '2.1.2'
+ruby '3.3.4'
 
 group :test do
   gem 'rspec'

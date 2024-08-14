@@ -52,4 +52,4 @@ p6 = p3.transform(rcs)
 
 ## License
 
-MIT License. Copyright 2011 Ennova.
+MIT License
