@@ -1,5 +1,6 @@
 require_relative '../spec_helper.rb'
 require 'geom/rectangular_coordinate_system'
+require 'matrix'
 
 module Geom
   describe RectangularCoordinateSystem do
